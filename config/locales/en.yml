@@ -53,6 +53,8 @@ en:
   rubylode_projects_display_redmine: "Leave to Redmine"
   rubylode_projects_setting_show_summary: "Show the summary and charts above the list"
   rubylode_projects_setting_added_columns: "Columns added to the project list"
+  rubylode_projects_setting_add_columns_to_saved_queries: "Also add them to saved queries"
+  rubylode_projects_setting_add_columns_to_saved_queries_help: "Shows the ticked columns on a saved project query that holds none of this plugin's columns. The query itself is not changed, so turning this off brings back what was saved."
   rubylode_projects_setting_added_columns_help: "Added to Redmine's default columns when the list names none of its own. Every column can also be picked in the list options."
   rubylode_projects_setting_trend_weeks: "Weeks in the trend"
   rubylode_projects_setting_trend_weeks_help: "From %{first} to %{last}. The portfolio chart and the sparklines cover this many weeks."

@@ -2,7 +2,19 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [1.2.0] - 2026-11-02
+
+### Added
+
+- A setting, "Also add them to saved queries" (key `add_columns_to_saved_queries`, off by default). When on, a saved project
+  query that holds none of the plugin's columns shows the ticked ones. It is applied when the page is built; the query is
+  never written to, so turning the setting off brings back what was saved. A query that holds any of the columns, a visit
+  that picks its own columns and API requests are left as they are.
+- A table of every setting key, its allowed values and its default in the README, for tools that write the settings.
+
+### Fixed
+
+- A saved project query, such as one made before the plugin was installed, never showed the plugin's columns. It can now.
 
 ## [1.1.0] - 2026-11-02
 

@@ -64,13 +64,28 @@ module RubylodeProjects
     end
 
     # The columns ticked in the plugin settings go after Redmine's default columns, but only when the list names no columns
-    # of its own: a saved query, or a visit that picked its columns, keeps exactly those.
+    # of its own: a visit that picked its columns keeps exactly those. A saved query keeps its columns too, unless the
+    # "add to saved queries" setting is on and the query holds none of the plugin's columns; then the ticked ones are added
+    # for this page only, and the query is not written.
     def apply_added_columns
       return if RubylodeProjects::Coexistence.other_summary_present?
-      return if @query.persisted? || params[:c].present? || nested_query_params[:column_names].present?
+      return if params[:c].present? || nested_query_params[:column_names].present?
 
-      added = RubylodeProjects::ProjectColumns.query_column_names(RubylodeProjects::PluginSettings.new.added_columns)
-      @query.column_names = (@query.default_columns_names + added).uniq if added.any?
+      settings = RubylodeProjects::PluginSettings.new
+      return if @query.persisted? && !saved_query_gets_added_columns?(settings)
+
+      added = RubylodeProjects::ProjectColumns.query_column_names(settings.added_columns)
+      @query.column_names = (current_column_names + added).uniq if added.any?
+    end
+
+    def saved_query_gets_added_columns?(settings)
+      return false if api_request? || !settings.add_columns_to_saved_queries?
+
+      current_column_names.none? { |name| RubylodeProjects::ProjectColumns.own_name?(name) }
+    end
+
+    def current_column_names
+      @query.has_default_columns? ? @query.default_columns_names : @query.column_names
     end
 
     def requested_display_type

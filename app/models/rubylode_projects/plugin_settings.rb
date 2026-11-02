@@ -30,6 +30,7 @@ module RubylodeProjects
       "default_display" => "list",
       "show_summary" => "1",
       "added_columns" => %w[open_issues overdue percent_done trend],
+      "add_columns_to_saved_queries" => "0",
       "trend_weeks" => "12",
       "welcome_projects_table" => "0",
       "welcome_projects_table_column" => "right",
@@ -107,6 +108,9 @@ module RubylodeProjects
     rescue ArgumentError, TypeError
       Integer(DEFAULTS["projects_table_limit"])
     end
+
+    # Off unless switched on: a saved query keeps the columns it was saved with.
+    def add_columns_to_saved_queries? = switched_on?("add_columns_to_saved_queries")
 
     def table_description_shown? = switched_on?("projects_table_show_description")
 

@@ -105,8 +105,9 @@ rendered as the installed Redmine has it; the plugin puts its summary in front a
 - Columns: Open issues, Overdue, Closed (last 7 days), % done (a thin bar) and Trend (a sparkline of issues closed per
   week). They are ProjectQuery columns, so they appear in the list options, and in the CSV export as plain text (the trend
   is the weekly numbers separated by spaces). Last activity is Redmine's own column. Defaults: Redmine's default columns
-  (Name, Identifier and Description in a stock install) plus Open issues, Overdue, % done and Trend. A saved query, or a
-  visit that names its own columns, keeps exactly those. The new columns cannot be sorted: the figures depend on what the
+  (Name, Identifier and Description in a stock install) plus Open issues, Overdue, % done and Trend. A visit that names
+  its own columns keeps exactly those. A saved query keeps its columns too, unless "Also add them to saved queries" is on
+  (see Settings). The new columns cannot be sorted: the figures depend on what the
   viewer may see, so there is no cheap column to sort by.
 - Hover a sparkline for the week's opened and closed counts with links to those issues; the arrow keys move between
   weeks, Escape closes the card, and on a touch screen a tap shows it.
@@ -130,7 +131,8 @@ with the plugin on and off for 3 and 30 projects. Redmine's own list adds querie
 Back to the board. `/projects?display_type=board` always shows the board. A display named in the address is remembered
 for the rest of the session, so the plain Projects link keeps it; a new session starts from the setting. To make the board
 the default again, or to follow Redmine's own setting, change "Default projects display" below. `?summary=0` hides the
-summary for one request. A saved query (including the default query set in Redmine's settings) is shown as it was saved.
+summary for one request. A saved query (including the default query set in Redmine's settings) is shown as it was saved,
+unless "Also add them to saved queries" is on.
 
 If another plugin adds a summary to the project list. When a plugin that supplies its own summary of the projects list
 is installed (this plugin looks for `redmine_projects_dashboard`), it shows neither its tiles and charts nor its columns, so
@@ -207,12 +209,31 @@ Administration, Plugins, Configure. The values are checked when saved: a bad one
 | Default projects display | List, Board, Leave to Redmine (Redmine's own "project list display type" setting applies) | List |
 | Show the summary and charts above the list | on or off | on |
 | Columns added to the project list | any of Open issues, Overdue, Closed (last 7 days), % done, Trend, Last activity | Open issues, Overdue, % done, Trend |
+| Also add them to saved queries | on or off. When on, a saved project query that holds none of this plugin's columns shows the ticked ones. The query is not changed, and a query that holds any of them is left alone | off |
 | Weeks in the trend | a whole number from 4 to 26 (the portfolio chart and the sparklines) | 12 |
 | Show the projects table on the welcome page | on or off | off |
 | Column of the welcome page | Left, Right | Right |
 | Rows in the projects table | a whole number from 1 to 100 (also the default for the macro and the partial) | 20 |
 | Show the description in the projects table | on or off | on |
 | Show the done bar in the projects table | on or off | on |
+
+### Writing the settings from a deployment tool
+
+Redmine keeps the settings as one hash in `Setting.plugin_redmine_rubylode_projects`. Missing keys read as the default, so a
+tool can write only the keys it wants to change. On/off values are the strings `"1"` and `"0"`; `added_columns` is an array.
+
+| Key | Allowed values | Default |
+|---|---|---|
+| `default_display` | `"list"`, `"board"`, `"redmine"` | `"list"` |
+| `show_summary` | `"1"`, `"0"` | `"1"` |
+| `added_columns` | any of `"open_issues"`, `"overdue"`, `"closed_week"`, `"percent_done"`, `"trend"`, `"last_activity"`; `[]` for none | `["open_issues", "overdue", "percent_done", "trend"]` |
+| `add_columns_to_saved_queries` | `"1"`, `"0"` | `"0"` |
+| `trend_weeks` | a whole number from 4 to 26 | `"12"` |
+| `welcome_projects_table` | `"1"`, `"0"` | `"0"` |
+| `welcome_projects_table_column` | `"left"`, `"right"` | `"right"` |
+| `projects_table_limit` | a whole number from 1 to 100 | `"20"` |
+| `projects_table_show_description` | `"1"`, `"0"` | `"1"` |
+| `projects_table_show_done_bar` | `"1"`, `"0"` | `"1"` |
 
 The default display applies only when the address names no `display_type`, no saved query, and the user has not chosen a
 display earlier in the session.

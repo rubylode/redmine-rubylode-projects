@@ -24,6 +24,12 @@
   <em class="info"><%= l(:rubylode_projects_setting_added_columns_help) %></em>
 </p>
 <p>
+  <label for="settings_add_columns_to_saved_queries"><%= l(:rubylode_projects_setting_add_columns_to_saved_queries) %></label>
+  <%= hidden_field_tag "settings[add_columns_to_saved_queries]", "0", id: nil %>
+  <%= check_box_tag "settings[add_columns_to_saved_queries]", "1", current.add_columns_to_saved_queries?, id: "settings_add_columns_to_saved_queries" %>
+  <em class="info"><%= l(:rubylode_projects_setting_add_columns_to_saved_queries_help) %></em>
+</p>
+<p>
   <label for="settings_trend_weeks"><%= l(:rubylode_projects_setting_trend_weeks) %></label>
   <%= number_field_tag "settings[trend_weeks]", settings.to_h.stringify_keys.fetch("trend_weeks", current.trend_weeks), id: "settings_trend_weeks",
                        min: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.first, max: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.last %>
