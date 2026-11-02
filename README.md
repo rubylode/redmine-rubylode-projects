@@ -1,9 +1,9 @@
 # Rubylode Projects for Redmine
 
-TL;DR: a project Overview page with numbers you can read at a glance, and pages for the projects list in
-[Redmine](https://www.redmine.org).
+TL;DR: a project Overview page with counts, a weekly chart and a list of urgent issues, plus a summary, extra columns and
+paging for the projects list in [Redmine](https://www.redmine.org).
 
-Status: version 1.1.0, Redmine 7 only. See `docs/roadmap/ROADMAP.md` for what is decided and what is still open.
+Status: version 1.1.0, Redmine 7 only. `docs/roadmap/ROADMAP.md` lists what is decided and what is open.
 
 Contents:
 
@@ -19,12 +19,12 @@ Contents:
 - [Known limits](#known-limits)
 - [Try it](#try-it)
 - [Tests](#tests)
+- [Releasing](#releasing)
 - [License](#license)
-- [Disclaimer](#disclaimer)
 
 ## What it does
 
-**A project's Overview page** shows a set of cards in place of Redmine's own blocks:
+A project's Overview page shows a set of cards in place of Redmine's own blocks:
 
 - The project's description as a one-line subtitle under the title, with the whole of it on hover.
 - Four tiles: open issues (split by tracker), closed (as a share of all), all issues (and how many subprojects they span),
@@ -42,13 +42,12 @@ The cards replace Redmine's description, issue tracking, time tracking, members 
 appears twice. News, custom fields and blocks that other plugins add to the page stay. A "Classic overview" link at the
 bottom of the cards (`?view=classic`) shows Redmine's own page with every block, and links back.
 
-Redmine's page is never rewritten: it is rendered as the installed Redmine has it and passed through untouched inside a
-wrapper, and the stylesheet hides the replaced blocks under the wrapper's class (`display: none`, so screen readers skip
-them too).
+Redmine's page is rendered as the installed Redmine has it and passed through untouched inside a wrapper. The stylesheet
+hides the replaced blocks under the wrapper's class (`display: none`, so screen readers skip them too).
 
 ![The Overview page of a demo project: subtitle, four tiles, the weekly chart, the tracker panel, the in-progress-and-urgent list, members, subprojects and time](docs/screenshots/project-overview.png)
 
-**The projects list** at `/projects` opens in the list view with a summary and charts above it (see [The projects list](#the-projects-list)), and gets pages in the board view. Redmine 7 already pages the list view but puts every
+The projects list at `/projects` opens in the list view with a summary and charts above it (see [The projects list](#the-projects-list)), and gets pages in the board view. Redmine 7 already pages the list view but puts every
 project on one page in the board view. The plugin cuts the board into pages with Redmine's own page links and per-page
 choice, which reads the "Objects per page options" setting (Administration, Settings, Display). Filters keep working, and
 the list view is left as Redmine has it.
@@ -59,35 +58,35 @@ the list view is left as Redmine has it.
 
 ## Interactivity
 
-The charts and tiles answer "what is behind this number?" without leaving the page.
+Charts and tiles show what is behind a number without leaving the page.
 
 ![The weekly chart with a week's tooltip and the other weeks dimmed](docs/screenshots/project-overview-week-tooltip.png)
 
-- **The weekly chart.** Hover a week, tab to it or tap it (the first tap shows the card, the second follows the link) and a
+- The weekly chart. Hover a week, tab to it or tap it (the first tap shows the card, the second follows the link) and a
   card gives the week's dates, issues opened, closed and the net change, how many issues were open at the end of that week,
   and the three trackers most issues were opened in. The week's column is highlighted and the others dim. The card links to
   the issues opened that week and the issues closed that week; clicking the column opens the first list. The legend entries
   are buttons that hide and show a series.
-- **The tiles.** Hover or focus a tile and a card lists the five newest issues behind the number (number, subject, status) with
+- The tiles. Hover or focus a tile and a card lists the five newest issues behind the number (number, subject, status) with
   a "See all N" link. Clicking the tile goes to that list. The done tile lists the closed issues.
 
 ![A tile's card with the five newest open issues](docs/screenshots/project-overview-tile-popover.png)
 
-- **By tracker.** Hover or focus a row for its open, closed and overdue counts and the share done (overdue is open issues past
+- By tracker. Hover or focus a row for its open, closed and overdue counts and the share done (overdue is open issues past
   their due date). Clicking the row goes to that tracker's issue list.
-- **Keyboard and screen readers.** The weeks are links, so they are in the tab order; the arrow keys move between them and
+- Keyboard and screen readers. The weeks are links, so they are in the tab order; the arrow keys move between them and
   Enter opens the list. Escape closes a card. Each week's link carries its figures as its label, and a hidden table repeats
   them with both issue lists for every week (it shows itself when a link in it has focus), so nothing needs the mouse.
   Animations stop under `prefers-reduced-motion`.
-- **The links** are built in one place (`RubylodeProjects::IssueListLink`) in the format Redmine's own filters use
+- The links are built in one place (`RubylodeProjects::IssueListLink`) in the format Redmine's own filters use
   (`set_filter=1&f[]=created_on&op[created_on]=><&v[created_on][]=...`). Only filter names, whole-number ids and dates go
   into them, all percent-escaped. Subprojects are included or excluded the same way the numbers were counted, with
   Redmine's `subproject_id` filter.
-- **No extra requests.** The figures for all the cards come with the page, in one JSON block, in a fixed number of queries
+- No extra requests. The figures for all the cards come with the page, in one JSON block, in a fixed number of queries
   however many issues the project has (a test checks that). One small script, `assets/javascripts/overview.js`, plain
   JavaScript with no framework, writes them out as text; without it the page still works, and the weeks and tiles are
   ordinary links.
-- **Who sees what** is the same as everywhere else: the issues in a card go through Redmine's visibility rules.
+- Who sees what is the same as everywhere else: the issues in a card go through Redmine's visibility rules.
 
 ## The projects list
 
@@ -96,27 +95,27 @@ rendered as the installed Redmine has it; the plugin puts its summary in front a
 
 ![The projects list: seven tiles, the weekly chart, where the work is, and the list with the added columns](docs/screenshots/projects-list-summary.png)
 
-- **Seven tiles**: Projects, Open issues, Closed this week, Overdue, Due in 7 days, Unassigned and Quiet 30+ days (projects
+- Seven tiles: Projects, Open issues, Closed this week, Overdue, Due in 7 days, Unassigned and Quiet 30+ days (projects
   with no activity for 30 days). Each issue tile links to the issue list that holds exactly those issues, and hovering or
   focusing it shows the five newest behind the number.
-- **Opened vs closed per week** over the projects in the list: the same chart, tooltip and keyboard behaviour as a project's
+- Opened vs closed per week over the projects in the list: the same chart, tooltip and keyboard behaviour as a project's
   Overview (one partial and one script serve both).
-- **Where the work is**: open issues per top-level project, the busiest eight, subprojects counted in. Each bar links to
+- Where the work is: open issues per top-level project, the busiest eight, subprojects counted in. Each bar links to
   that project's open issues; hover or focus shows its open, overdue, recently closed and done figures.
-- **Columns**: Open issues, Overdue, Closed (last 7 days), % done (a thin bar) and Trend (a sparkline of issues closed per
+- Columns: Open issues, Overdue, Closed (last 7 days), % done (a thin bar) and Trend (a sparkline of issues closed per
   week). They are ProjectQuery columns, so they appear in the list options, and in the CSV export as plain text (the trend
   is the weekly numbers separated by spaces). Last activity is Redmine's own column. Defaults: Redmine's default columns
   (Name, Identifier and Description in a stock install) plus Open issues, Overdue, % done and Trend. A saved query, or a
   visit that names its own columns, keeps exactly those. The new columns cannot be sorted: the figures depend on what the
   viewer may see, so there is no cheap column to sort by.
-- **Hover a sparkline** for the week's opened and closed counts with links to those issues; the arrow keys move between
+- Hover a sparkline for the week's opened and closed counts with links to those issues; the arrow keys move between
   weeks, Escape closes the card, and on a touch screen a tap shows it.
 
 ![A sparkline's card with the week's figures and links](docs/screenshots/projects-list-trend-tooltip.png)
 
 ![A tile's card with the five newest issues behind the number](docs/screenshots/projects-list-tile-card.png)
 
-**What the summary counts.** The projects of the list as filtered (every page, not just the one shown), as the viewer may
+What the summary counts. The projects of the list as filtered (every page, not just the one shown), as the viewer may
 see them (`Project.visible`, `Issue.visible`). The default filter leaves out closed projects, and archived projects are never
 visible; filter the list to show closed projects and they count. Each issue is counted once. A project's own figures include
 its subprojects when Redmine's "Display subprojects issues on main projects by default" setting is on, the same as the list
@@ -124,17 +123,16 @@ they link to. Weeks run Monday to Sunday in the user's time zone. "Closed this w
 the last seven days. The summary's links filter on the project ids of the list; past 150 projects the links leave that filter
 out (the address would be too long) and the page says so, so then a link can list more than its number.
 
-**Query count.** The summary and the columns add a fixed number of queries (31 in the test Redmine) however many projects
-the list holds: grouped counts, two lists of recent dates, one list of projects and Redmine's own last-activity lookup. A
-test compares the page with the plugin on and off for 3 and 30 projects. Redmine's own list adds about two queries per
-project (for its description column), and that does not change.
+Query count. The summary and the columns add a fixed number of queries however many projects the list holds: grouped
+counts, two lists of recent dates, one list of projects and Redmine's own last-activity lookup. A test compares the page
+with the plugin on and off for 3 and 30 projects. Redmine's own list adds queries per project, and that does not change.
 
-**Back to the board.** `/projects?display_type=board` always shows the board. A display named in the address is remembered
+Back to the board. `/projects?display_type=board` always shows the board. A display named in the address is remembered
 for the rest of the session, so the plain Projects link keeps it; a new session starts from the setting. To make the board
 the default again, or to follow Redmine's own setting, change "Default projects display" below. `?summary=0` hides the
 summary for one request. A saved query (including the default query set in Redmine's settings) is shown as it was saved.
 
-**If another plugin adds a summary to the project list.** When a plugin that supplies its own summary of the projects list
+If another plugin adds a summary to the project list. When a plugin that supplies its own summary of the projects list
 is installed (this plugin looks for `redmine_projects_dashboard`), it shows neither its tiles and charts nor its columns, so
 nothing appears twice; the display choice (list or board) still applies. A different plugin id needs a one-line change in
 `RubylodeProjects::Coexistence`.
@@ -148,16 +146,16 @@ block you place. It is not added to `/projects`, which already has the summary a
 
 ![The welcome page with the projects table in the right column](docs/screenshots/welcome-projects-table.png)
 
-- **Rows.** One per project the viewer may see, in Redmine's project tree order: a project, then its subprojects, indented.
+- Rows. One per project the viewer may see, in Redmine's project tree order: a project, then its subprojects, indented.
   Archived and closed projects are left out. A subproject whose parent the viewer cannot see is listed as a top-level project.
-- **Columns.** Name (a link), description (one line, cut at 140 characters), Open, Closed and, optionally, a thin done bar.
+- Columns. Name (a link), description (one line, cut at 140 characters), Open, Closed and, optionally, a thin done bar.
   Done is the share of closed issues, the same figure as the Overview's done tile.
-- **Counts.** Only issues the viewer may see (`Issue.visible`), grouped by project in two queries however many projects
+- Counts. Only issues the viewer may see (`Issue.visible`), grouped by project in two queries however many projects
   there are (a test checks the query count with 3 and 30 projects). Each count links to that project's issue list filtered to
   open or closed, built with `IssueListLink`. A row counts its own issues and its links exclude the subprojects, which have
   rows of their own; with `subprojects=false` only top-level projects get a row, and each counts everything under it, with
   links that include the subprojects.
-- **Accessible.** A real table with a caption, `scope` on every header (the project name is the row header), links that name
+- Accessible. A real table with a caption, `scope` on every header (the project name is the row header), links that name
   the project and the count for screen readers, a visible focus outline, and a done bar that is decoration next to the
   percentage in text.
 
@@ -221,29 +219,28 @@ display earlier in the session.
 
 ## The rules behind the numbers
 
-- **Who sees what.** Every count and list goes through Redmine's own issue visibility, so private issues, per-tracker
+- Who sees what. Every count and list goes through Redmine's own issue visibility, so private issues, per-tracker
   permissions and roles that see only their own issues are respected. A project without the Issue tracking module, or a
   user who may not view its issues, gets no issue cards; the members and subprojects cards still show. The time card
   follows Redmine's own rules: it shows to users who may view time entries (which needs the Time tracking module), and
   the totals only to those who may see everyone's time.
-- **Subprojects.** Counts include subprojects when Redmine's "Display subprojects issues on main projects by default"
+- Subprojects. Counts include subprojects when Redmine's "Display subprojects issues on main projects by default"
   setting is on (it is by default), so the numbers match the issue lists they link to. With the setting off, they cover
   the project alone.
-- **Done** is the share of issues that are closed, rounded down, so 100% means every issue is closed. It is not Redmine's
+- Done is the share of issues that are closed, rounded down, so 100% means every issue is closed. It is not Redmine's
   "% done" field.
-- **The weekly chart** counts an issue as opened in the week of its creation date, and as closed in the week of its closing
+- The weekly chart counts an issue as opened in the week of its creation date, and as closed in the week of its closing
   date if it is closed now. Weeks run Monday to Sunday in the user's time zone and are labelled with their ISO week number.
-- **In progress and urgent.** An open issue is listed when either its priority sits above the default priority (High,
+- In progress and urgent. An open issue is listed when either its priority sits above the default priority (High,
   Urgent and Immediate in Redmine's default data), or its status is no longer its tracker's default status, which means work
   has started (In Progress, Feedback and Resolved in the default data). Without a default priority, the middle priority
   stands in for it. The list is sorted by priority, highest first, then by the last update.
-- **Board pages** hold whole trees: the per-page number counts top projects, and each comes with all of its subprojects,
+- Board pages hold whole trees: the per-page number counts top projects, and each comes with all of its subprojects,
   so a subproject is never on a different page from its parent.
 
 ## Compatibility
 
-Redmine 7.x (7.0.0 or newer). I run it on Redmine 7.0.2; the workflow in `.github/workflows/tests.yml` also tests the 7.0-stable branch, on
-Ruby 3.4 and 4.0. Redmine 6 and older are not supported. The plugin adds no table and no migration.
+Redmine 7.x (7.0.0 or newer). I run it on Redmine 7.0.2. The workflow in `.github/workflows/tests.yml` tests 7.0.2 and the 7.0-stable branch on Ruby 3.4 and 4.0. Redmine 6 and older are not supported. The plugin adds no table and no migration.
 
 ## Installation
 
@@ -254,7 +251,7 @@ Redmine 7.0 or newer. The folder must be named `redmine_rubylode_projects`, the 
        cd /path/to/redmine/plugins
        git clone https://github.com/rubylode/redmine-rubylode-projects.git redmine_rubylode_projects
 
-2. Restart Redmine ([Passenger](https://www.phusionpassenger.com), [Puma](https://puma.io), whatever serves it).
+2. Restart Redmine ([Passenger](https://www.phusionpassenger.com), [Puma](https://puma.io) or whatever serves it).
    There is no migration. Settings are under Administration, Plugins, Configure.
 
 3. Open a project's Overview, and Projects.
@@ -371,7 +368,7 @@ The projects table adds these (each defaults to a property above, so a dark them
 | `--rubylode-projects-table-bar-fill-color` | the done colour | its filled part |
 | `--rubylode-projects-table-focus-color` | the accent colour | the keyboard focus outline |
 
-A block a theme can paste and adjust (soft grey page, white cards, a blue ramp from light to dark):
+A block to paste into a theme and adjust (soft grey page, white cards, a blue ramp from light to dark):
 
     :root {
       --rubylode-projects-page-background: #f4f5f7;
@@ -406,8 +403,7 @@ A throwaway Redmine 7 runs from this folder, with the repository mounted as the 
     ruby bin/demo restart   pick up a change to the plugin
     ruby bin/demo reset     wipe it
 
-The demo data (`test/seed.rb`) is made up: 38 projects, one big project called Orchard with 360 issues over 14 weeks, due dates on some open issues, a few issues closed this week, and
-eight people. Sign in as admin, password admin, or as `ada.lovelace` (and the others) with `demo-password-1`.
+The demo data (`test/seed.rb`) is made up: 38 projects, one big project called Orchard with 360 issues over 14 weeks, due dates on some open issues, a few issues closed this week and eight people. Sign in as admin / admin, or as `ada.lovelace` (and the others) with `demo-password-1`.
 
 ## Tests
 
@@ -416,9 +412,7 @@ eight people. Sign in as admin, password admin, or as `ada.lovelace` (and the ot
 
 They run in a Redmine 7 image with its test gems (`docker/test.Dockerfile`). The numbers (percentages, weekly buckets,
 the chart scale and layout, the urgency rule, the board pages, the issue list links, the weekly running totals) are plain
-Ruby classes with their own unit tests. The tooltip data, the markup and the query count are checked by an integration test
-(`test/integration/overview_interactivity_test.rb`, `projects_summary_test.rb`, `project_columns_test.rb`, `default_display_test.rb`); the script itself was checked in Chrome (hover, focus,
-tap, Escape, click through to a filtered list), and that check is not part of the repository.
+Ruby classes with their own unit tests. Integration tests (`test/integration/overview_interactivity_test.rb`, `projects_summary_test.rb`, `project_columns_test.rb`, `default_display_test.rb`) check the tooltip data, the markup and the query count. I checked the script by hand in Chrome (hover, focus, tap, Escape, click through to a filtered list). That check is not in the repository.
 
 Pull Requests are welcome!
 
@@ -429,19 +423,12 @@ workflow runs the tests on every supported Redmine and Ruby, builds `redmine_rub
 file) and publishes the GitHub release with that changelog entry as its notes. To build a release for a tag that already
 exists, open Actions, choose release, Run workflow, and enter the tag.
 
-The text to paste when listing the plugin on www.redmine.org, and how to read the result of Check for updates, is in [docs/redmine-org-listing.md](docs/redmine-org-listing.md).
+The text for the www.redmine.org listing, and how to read the result of Check for updates, is in [docs/redmine-org-listing.md](docs/redmine-org-listing.md).
 
 ## License
 
 GNU General Public License, version 2 or (at your option) any later version, the same as Redmine. See `LICENSE`.
 
-Copyright (C) 2026 Nick Gorbikoff. Each Ruby file carries the same short notice Redmine puts on its own.
+Copyright (C) 2026  Nick Gorbikoff
 
-## Disclaimer
-
-Use it at your own risk. It comes with no warranty of any kind, as the license says: the software is provided "as is",
-without any promise that it works, that it fits your purpose or that it's free of bugs. I'm not liable for any damage,
-data loss or downtime that comes from using it, installing it or removing it.
-
-The plugin writes nothing to the database, but it changes how two of Redmine's pages are drawn. Back up your Redmine
-database before you install anything, and try it on a test instance first. I've tested it on Redmine 7.0.2 and nothing else.
+No warranty, as the GPL says. The plugin changes how two of Redmine's pages are drawn, so try it on a copy of your tracker before the real one.

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to this plugin. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
@@ -9,30 +9,29 @@ All notable changes to this plugin. The format follows [Keep a Changelog](https:
 ### Added
 
 - A projects table: one row per project the viewer may see (subprojects indented under their parents), with the name, a
-  one-line description, open and closed issue counts that link to the filtered issue lists, and an optional done bar. The
-  counts come from grouped queries, a fixed number however many projects there are, and count only the issues the viewer
-  may see. Archived and closed projects are left out.
+  one-line description, open and closed issue counts that link to the filtered issue lists, and an optional done bar.
+  Counts include only issues the viewer may see and use a fixed number of grouped queries. Archived and closed projects
+  are left out.
 - The `{{projects_table}}` wiki macro, with `title=`, `limit=` and `subprojects=false`.
 - The table on the welcome page, in the left or right column (off by default).
 - The partial `rubylode_projects/projects_table`, with the locals `title`, `limit`, `subprojects`, `show_description`,
   `show_done_bar` and `user`, for other plugins and themes.
-- Settings: the welcome page table on or off and its column, rows (1 to 100, default 20), the description and the done bar.
-  The defaults change nothing for an existing install.
+- Settings for the welcome page table: on or off, its column, rows (1 to 100, default 20), the description and the done
+  bar. The defaults change nothing for an existing install.
 - `--rubylode-projects-table-*` custom properties for the table (listed in the README).
 
 ## [1.0.0] - 2026-11-02
 
 First stable release. A project Overview with counts, a weekly chart and what is urgent, and a summary, extra columns and a board view for the projects list.
-Its name, author and version are ready to list on redmine.org, and the plugin now shows its project address on Administration, Plugins.
+The name, author and version match the redmine.org listing, and the plugin shows its project address on Administration, Plugins.
 
 ## [0.5.1] - 2026-11-02
 
 ### Fixed
 
-- The test that compares Redmine's own rendering of a hostile project description with the plugin's page failed on the
-  newest gems that Redmine installs from a fresh checkout, because they write `<` and `>` inside an attribute as entities. The
-  check that the sample is in the compared part now accepts both forms; the comparison itself is unchanged. No change to the
-  plugin's behaviour.
+- The test that compares Redmine's rendering of a hostile project description with the plugin's page failed on the newest
+  gems, which write `<` and `>` inside an attribute as entities. The check now accepts both forms. The plugin's
+  behaviour is unchanged.
 
 ## [0.5.0] - 2026-11-02
 
@@ -40,22 +39,22 @@ Its name, author and version are ready to list on redmine.org, and the plugin no
 
 - The projects list opens in the list view by default, with a summary above it: seven tiles (Projects, Open issues, Closed this
   week, Overdue, Due in 7 days, Unassigned, Quiet 30+ days), the Overview's opened-against-closed chart over the projects in
-  the list, and "Where the work is", open issues per top-level project. Everything counts what the viewer may see; tiles
-  and bars link to the exact issue lists and show cards on hover and focus.
+  the list, and "Where the work is", open issues per top-level project. Everything counts what the viewer may see. Tiles
+  and bars link to the matching issue lists and show cards on hover and focus.
 - Open issues, Overdue, Closed (last 7 days), % done and Trend columns for the project list, as ProjectQuery columns that
   work in the list options and the CSV export. The Trend sparkline shows each week's opened and closed with links.
 - Plugin settings: default projects display (list, board, leave to Redmine), the summary on or off, the columns added, and
   the weeks in the trend (4 to 26), validated on save.
 - `?summary=0` hides the summary for one request; `?display_type=board` always gives the board, and a display named in the
   address is remembered for the session.
-- Redmine's own setting is followed when the default display is left to Redmine; saved queries are untouched.
+- Follow Redmine's own display setting when the default display is left to Redmine. Saved queries are untouched.
 - `IssueListLink` builds overdue, due-date, unassigned and several-project links.
 - Custom properties for the summary, bars, progress bar and sparkline (listed in the README).
 - Demo data with due dates and issues closed this week.
 
 ### Changed
 
-- The Overview's script is also loaded on the projects list. The weekly chart partial takes an optional note, so both pages use it.
+- Load the Overview's script on the projects list too. The weekly chart partial takes an optional note, so both pages use it.
 - If a plugin with its own projects summary is installed (`redmine_projects_dashboard`), this plugin adds neither tiles nor columns.
 
 ## [0.4.0] - 2026-11-01
@@ -96,8 +95,8 @@ Its name, author and version are ready to list on redmine.org, and the plugin no
 ### Changed
 
 - The cards replace Redmine's description, issue tracking, time tracking, members and subprojects blocks instead of
-  sitting above them, so nothing shows twice. Redmine's page is passed through untouched and the stylesheet hides those
-  blocks; news, custom fields and other plugins' blocks stay.
+  sitting above them. Redmine's page is passed through untouched and the stylesheet hides those blocks. News, custom
+  fields and other plugins' blocks stay.
 - Every colour and size is a `--rubylode-projects-*` custom property with its default in `:where(:root)`; the README
   lists them under Theming. The 0.2.0 `--rubylode-overview-*` names are gone.
 
