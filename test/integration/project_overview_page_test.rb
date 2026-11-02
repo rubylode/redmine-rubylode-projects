@@ -184,7 +184,8 @@ class ProjectOverviewPageTest < Redmine::IntegrationTest
     get "/projects/#{@project.identifier}"
     with_cards = redmine_part(response.body, "rubylode-projects-redmine-page rubylode-projects-cards-shown")
     assert_includes with_cards.last, "&lt;script&gt;alert(1)&lt;/script&gt;", "the description is in the compared part"
-    assert_includes with_cards.last, %(<p title="</noscript>), "and so is Redmine's rendering of the noscript sample"
+    # Newer sanitizer gems write the quote's "<" and ">" as entities inside the attribute, older ones leave them raw.
+    assert_match %r{<p title="(?:</noscript>|&lt;/noscript&gt;)}, with_cards.last, "and so is Redmine's rendering of the noscript sample"
     assert_equal classic, with_cards
   end
 

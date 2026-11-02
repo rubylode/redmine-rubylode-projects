@@ -23,7 +23,7 @@ Redmine::Plugin.register :redmine_rubylode_projects do
   author "Rubylode"
   author_url "https://github.com/rubylode"
   description "A project Overview with counts, a weekly chart and what is urgent, and pages for the board view of the projects list"
-  version "0.5.0"
+  version "0.5.1"
   requires_redmine version_or_higher: "7.0.0"
   settings default: RubylodeProjects::PluginSettings::DEFAULTS, partial: "settings/rubylode_projects_settings"
 end

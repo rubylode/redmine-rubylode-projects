@@ -4,6 +4,15 @@ All notable changes to this plugin. The format follows [Keep a Changelog](https:
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-11-02
+
+### Fixed
+
+- The test that compares Redmine's own rendering of a hostile project description with the plugin's page failed on the
+  newest gems that Redmine installs from a fresh checkout, because they write `<` and `>` inside an attribute as entities. The
+  check that the sample is in the compared part now accepts both forms; the comparison itself is unchanged. No change to the
+  plugin's behaviour.
+
 ## [0.5.0] - 2026-11-02
 
 ### Added

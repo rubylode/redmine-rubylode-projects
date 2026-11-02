@@ -3,7 +3,7 @@
 TL;DR: a project Overview page with numbers you can read at a glance, and pages for the projects list in
 [Redmine](https://www.redmine.org).
 
-Status: version 0.5.0, Redmine 7 only. See `docs/roadmap/ROADMAP.md` for what is decided and what is still open.
+Status: version 0.5.1, Redmine 7 only. See `docs/roadmap/ROADMAP.md` for what is decided and what is still open.
 
 Contents:
 
@@ -341,6 +341,13 @@ Ruby classes with their own unit tests. The tooltip data, the markup and the que
 tap, Escape, click through to a filtered list), and that check is not part of the repository.
 
 Pull Requests are welcome!
+
+## Releasing
+
+Push a `vX.Y.Z` tag whose version matches `version` in `init.rb` and that has an entry in `CHANGELOG.md`. The release
+workflow runs the tests on every supported Redmine and Ruby, builds `redmine_rubylode_projects-X.Y.Z.zip` (with a checksum
+file) and publishes the GitHub release with that changelog entry as its notes. To build a release for a tag that already
+exists, open Actions, choose release, Run workflow, and enter the tag.
 
 ## License
 
