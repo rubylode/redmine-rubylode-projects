@@ -4,6 +4,22 @@ All notable changes to this plugin. The format follows [Keep a Changelog](https:
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-02
+
+### Added
+
+- A projects table: one row per project the viewer may see (subprojects indented under their parents), with the name, a
+  one-line description, open and closed issue counts that link to the filtered issue lists, and an optional done bar. The
+  counts come from grouped queries, a fixed number however many projects there are, and count only the issues the viewer
+  may see. Archived and closed projects are left out.
+- The `{{projects_table}}` wiki macro, with `title=`, `limit=` and `subprojects=false`.
+- The table on the welcome page, in the left or right column (off by default).
+- The partial `rubylode_projects/projects_table`, with the locals `title`, `limit`, `subprojects`, `show_description`,
+  `show_done_bar` and `user`, for other plugins and themes.
+- Settings: the welcome page table on or off and its column, rows (1 to 100, default 20), the description and the done bar.
+  The defaults change nothing for an existing install.
+- `--rubylode-projects-table-*` custom properties for the table (listed in the README).
+
 ## [1.0.0] - 2026-11-02
 
 First stable release. A project Overview with counts, a weekly chart and what is urgent, and a summary, extra columns and a board view for the projects list.

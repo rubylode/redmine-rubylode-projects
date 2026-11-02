@@ -3,13 +3,14 @@
 TL;DR: a project Overview page with numbers you can read at a glance, and pages for the projects list in
 [Redmine](https://www.redmine.org).
 
-Status: version 1.0.0, Redmine 7 only. See `docs/roadmap/ROADMAP.md` for what is decided and what is still open.
+Status: version 1.1.0, Redmine 7 only. See `docs/roadmap/ROADMAP.md` for what is decided and what is still open.
 
 Contents:
 
 - [What it does](#what-it-does)
 - [Interactivity](#interactivity)
 - [The projects list](#the-projects-list)
+- [The projects table](#the-projects-table)
 - [Settings](#settings)
 - [The rules behind the numbers](#the-rules-behind-the-numbers)
 - [Compatibility](#compatibility)
@@ -140,6 +141,65 @@ nothing appears twice; the display choice (list or board) still applies. A diffe
 
 ![The board view, still one address away](docs/screenshots/projects-board-paginated.png)
 
+## The projects table
+
+A table of the projects the viewer may see, each with its open and closed issue counts. It does not replace anything: it is a
+block you place. It is not added to `/projects`, which already has the summary and the columns.
+
+![The welcome page with the projects table in the right column](docs/screenshots/welcome-projects-table.png)
+
+- **Rows.** One per project the viewer may see, in Redmine's project tree order: a project, then its subprojects, indented.
+  Archived and closed projects are left out. A subproject whose parent the viewer cannot see is listed as a top-level project.
+- **Columns.** Name (a link), description (one line, cut at 140 characters), Open, Closed and, optionally, a thin done bar.
+  Done is the share of closed issues, the same figure as the Overview's done tile.
+- **Counts.** Only issues the viewer may see (`Issue.visible`), grouped by project in two queries however many projects
+  there are (a test checks the query count with 3 and 30 projects). Each count links to that project's issue list filtered to
+  open or closed, built with `IssueListLink`. A row counts its own issues and its links exclude the subprojects, which have
+  rows of their own; with `subprojects=false` only top-level projects get a row, and each counts everything under it, with
+  links that include the subprojects.
+- **Accessible.** A real table with a caption, `scope` on every header (the project name is the row header), links that name
+  the project and the count for screen readers, a visible focus outline, and a done bar that is decoration next to the
+  percentage in text.
+
+### On the welcome page
+
+Turn on "Show the projects table on the welcome page" in the plugin settings. It goes in the left or right column through
+Redmine's `view_welcome_index_left` and `view_welcome_index_right` hooks, after the welcome text or the news.
+
+### In a wiki page: the macro
+
+    {{projects_table}}
+    {{projects_table(title="Our projects", limit=10, subprojects=false)}}
+
+| Argument | Values | Default |
+|---|---|---|
+| `title` | the caption (quote it when it holds a comma) | Projects |
+| `limit` | a whole number from 1 to 100 | the "Rows in the projects table" setting |
+| `subprojects` | `false` for top-level projects only, each counting everything under it; `true` for the tree | true |
+
+An argument the macro does not know, or a limit or subprojects value it cannot use, shows Redmine's macro error. The macro
+is meant for wiki pages (including the welcome text), and its description shows in `{{macro_list}}`.
+
+![A wiki page with the projects macro](docs/screenshots/wiki-projects-table-macro.png)
+
+### From another plugin or a theme: the partial
+
+    <%= render partial: "rubylode_projects/projects_table", locals: { title: "Our projects", limit: 10, subprojects: false } %>
+
+The partial is `rubylode_projects/projects_table`. Every local is optional:
+
+| Local | Values | Default |
+|---|---|---|
+| `title` | the caption | Projects |
+| `limit` | 1 to 100 | the settings value |
+| `subprojects` | true or false | true |
+| `show_description` | true or false | the settings value |
+| `show_done_bar` | true or false | the settings value |
+| `user` | whose view of projects and issues it is | `User.current` |
+
+It renders nothing when the user may see no project, and it adds the plugin's stylesheet to the page head by itself.
+
+
 ## Settings
 
 Administration, Plugins, Configure. The values are checked when saved: a bad one shows the form again with the problem.
@@ -150,6 +210,11 @@ Administration, Plugins, Configure. The values are checked when saved: a bad one
 | Show the summary and charts above the list | on or off | on |
 | Columns added to the project list | any of Open issues, Overdue, Closed (last 7 days), % done, Trend, Last activity | Open issues, Overdue, % done, Trend |
 | Weeks in the trend | a whole number from 4 to 26 (the portfolio chart and the sparklines) | 12 |
+| Show the projects table on the welcome page | on or off | off |
+| Column of the welcome page | Left, Right | Right |
+| Rows in the projects table | a whole number from 1 to 100 (also the default for the macro and the partial) | 20 |
+| Show the description in the projects table | on or off | on |
+| Show the done bar in the projects table | on or off | on |
 
 The default display applies only when the address names no `display_type`, no saved query, and the user has not chosen a
 display earlier in the session.
@@ -290,6 +355,21 @@ the cards restyles these):
 
 The tooltip colours default to the card colours and the highlight to a tint of the accent colour, so a dark theme that
 restyles the cards restyles the tooltips and the highlight with them.
+
+The projects table adds these (each defaults to a property above, so a dark theme that restyles the cards restyles the table):
+
+| Property | Default | Used for |
+|---|---|---|
+| `--rubylode-projects-table-border-color` | the card border colour | row dividers |
+| `--rubylode-projects-table-header-text-color` | the label text colour | column headings |
+| `--rubylode-projects-table-row-hover-background` | the highlight colour | the row under the pointer |
+| `--rubylode-projects-table-indent` | `1.25em` | indent per subproject level |
+| `--rubylode-projects-table-description-width` | `24em` | widest the description column grows |
+| `--rubylode-projects-table-bar-width` | `5em` | the done bar's length |
+| `--rubylode-projects-table-bar-height` | `6px` | its thickness |
+| `--rubylode-projects-table-bar-track-color` | the meter track colour | its empty part |
+| `--rubylode-projects-table-bar-fill-color` | the done colour | its filled part |
+| `--rubylode-projects-table-focus-color` | the accent colour | the keyboard focus outline |
 
 A block a theme can paste and adjust (soft grey page, white cards, a blue ramp from light to dark):
 

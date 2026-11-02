@@ -17,6 +17,7 @@
 
 require "redmine"
 require_relative "lib/rubylode_projects/hooks"
+require_relative "lib/rubylode_projects/projects_table_macro"
 
 Redmine::Plugin.register :redmine_rubylode_projects do
   name "Rubylode Projects"
@@ -24,7 +25,7 @@ Redmine::Plugin.register :redmine_rubylode_projects do
   author_url "https://github.com/rubylode"
   url "https://github.com/rubylode/redmine-rubylode-projects"
   description "A project Overview with counts, a weekly chart and what is urgent, and pages for the board view of the projects list"
-  version "1.0.0"
+  version "1.1.0"
   requires_redmine version_or_higher: "7.0.0"
   settings default: RubylodeProjects::PluginSettings::DEFAULTS, partial: "settings/rubylode_projects_settings"
 end

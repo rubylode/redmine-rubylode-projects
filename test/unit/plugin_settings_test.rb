@@ -78,6 +78,46 @@ class RubylodeProjectsPluginSettingsTest < ActiveSupport::TestCase
     end
   end
 
+  test "the projects table settings default to changing nothing" do
+    defaults = settings({})
+    refute defaults.welcome_table_shown?
+    assert_equal "right", defaults.welcome_table_column
+    assert_equal 20, defaults.table_limit
+    assert defaults.table_description_shown?
+    assert defaults.table_done_bar_shown?
+    assert defaults.valid?
+  end
+
+  test "settings saved by an older version read as the table defaults" do
+    older = settings("default_display" => "board", "trend_weeks" => "8")
+    refute older.welcome_table_shown?
+    assert_equal 20, older.table_limit
+    assert older.table_description_shown?
+  end
+
+  test "the table switches read their 0 and 1" do
+    chosen = settings("welcome_projects_table" => "1", "projects_table_show_description" => "0", "projects_table_show_done_bar" => "0")
+    assert chosen.welcome_table_shown?
+    refute chosen.table_description_shown?
+    refute chosen.table_done_bar_shown?
+  end
+
+  test "the welcome column is left or right" do
+    assert settings("welcome_projects_table_column" => "left").valid?
+    assert_equal "left", settings("welcome_projects_table_column" => "left").welcome_table_column
+    refute settings("welcome_projects_table_column" => "middle").valid?
+    assert_equal "right", settings("welcome_projects_table_column" => "middle").welcome_table_column
+  end
+
+  test "the table rows are 1 to 100, whole numbers, and read clamped" do
+    [1, 20, "100", " 5"].each { |limit| assert settings("projects_table_limit" => limit).valid?, limit.inspect }
+    [0, 101, -1, "", "abc", "2.5", nil].each { |limit| refute settings("projects_table_limit" => limit).valid?, limit.inspect }
+    assert_match(/from 1 to 100/, settings("projects_table_limit" => 500).errors.first)
+    assert_equal 100, settings("projects_table_limit" => "500").table_limit
+    assert_equal 1, settings("projects_table_limit" => "0").table_limit
+    assert_equal 20, settings("projects_table_limit" => "abc").table_limit
+  end
+
   def with_plugin_settings(values)
     previous = Setting.plugin_redmine_rubylode_projects
     Setting.plugin_redmine_rubylode_projects = values

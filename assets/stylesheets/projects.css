@@ -860,3 +860,121 @@ table.list.projects td.rubylode_closed_week {
 .rubylode-spark-popover {
   position: fixed;
 }
+
+/* The projects table (welcome page, {{projects_table}} macro, rubylode_projects/projects_table partial).
+   Its own properties default to the card ones above, so a dark theme that restyles the cards restyles the table. */
+:where(:root) {
+  --rubylode-projects-table-border-color: var(--rubylode-projects-card-border-color);
+  --rubylode-projects-table-header-text-color: var(--rubylode-projects-label-text-color);
+  --rubylode-projects-table-row-hover-background: var(--rubylode-projects-highlight-color);
+  --rubylode-projects-table-indent: 1.25em;
+  --rubylode-projects-table-description-width: 24em;
+  --rubylode-projects-table-bar-width: 5em;
+  --rubylode-projects-table-bar-height: 6px;
+  --rubylode-projects-table-bar-track-color: var(--rubylode-projects-meter-track-color);
+  --rubylode-projects-table-bar-fill-color: var(--rubylode-projects-done-color);
+  --rubylode-projects-table-focus-color: var(--rubylode-projects-accent-color);
+}
+
+.rubylode-projects-table-block {
+  margin-bottom: var(--rubylode-projects-space-large);
+  overflow-x: auto;
+  color: var(--rubylode-projects-text-color);
+}
+
+.rubylode-projects-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rubylode-projects-table caption {
+  padding-bottom: var(--rubylode-projects-space-medium);
+  font-size: var(--rubylode-projects-heading-size);
+  font-weight: 600;
+  text-align: left;
+}
+
+.rubylode-projects-table th,
+.rubylode-projects-table td {
+  padding: var(--rubylode-projects-space-small) var(--rubylode-projects-space-medium);
+  border-bottom: 1px solid var(--rubylode-projects-table-border-color);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.rubylode-projects-table thead th {
+  color: var(--rubylode-projects-table-header-text-color);
+  font-size: var(--rubylode-projects-label-size);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rubylode-projects-table tbody th {
+  font-weight: normal;
+}
+
+.rubylode-projects-table tbody tr:hover {
+  background: var(--rubylode-projects-table-row-hover-background);
+}
+
+.rubylode-projects-table .rubylode-projects-table-name {
+  padding-left: calc(var(--rubylode-projects-space-medium) + var(--rubylode-projects-table-level, 0) * var(--rubylode-projects-table-indent));
+}
+
+.rubylode-projects-table .rubylode-projects-table-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.rubylode-projects-table .rubylode-projects-table-description {
+  max-width: var(--rubylode-projects-table-description-width);
+  overflow: hidden;
+  color: var(--rubylode-projects-muted-text-color);
+  font-size: var(--rubylode-projects-small-text-size);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rubylode-projects-table .rubylode-projects-table-done {
+  white-space: nowrap;
+}
+
+.rubylode-projects-table-bar {
+  display: inline-block;
+  width: var(--rubylode-projects-table-bar-width);
+  height: var(--rubylode-projects-table-bar-height);
+  overflow: hidden;
+  border-radius: var(--rubylode-projects-table-bar-height);
+  background: var(--rubylode-projects-table-bar-track-color);
+  vertical-align: middle;
+}
+
+.rubylode-projects-table-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--rubylode-projects-table-bar-fill-color);
+}
+
+.rubylode-projects-table-percentage {
+  margin-left: var(--rubylode-projects-space-small);
+  color: var(--rubylode-projects-muted-text-color);
+  font-size: var(--rubylode-projects-small-text-size);
+}
+
+.rubylode-projects-table a:focus-visible {
+  outline: 2px solid var(--rubylode-projects-table-focus-color);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Redmine draws a grid around the tables in wiki text; the projects table keeps only its row dividers there too. */
+.wiki table.rubylode-projects-table {
+  border: 0;
+}
+
+.wiki table.rubylode-projects-table th,
+.wiki table.rubylode-projects-table td {
+  border-width: 0 0 1px;
+  border-style: solid;
+  border-color: var(--rubylode-projects-table-border-color);
+}

@@ -45,6 +45,11 @@ class PluginSettingsPageTest < Redmine::IntegrationTest
     assert_select "input#settings_added_columns_open_issues[checked]"
     assert_select "input#settings_added_columns_closed_week:not([checked])"
     assert_select "input#settings_trend_weeks[value='12'][min='4'][max='26']"
+    assert_select "input#settings_welcome_projects_table:not([checked])"
+    assert_select "select#settings_welcome_projects_table_column option[selected][value=right]"
+    assert_select "input#settings_projects_table_limit[value='20'][min='1'][max='100']"
+    assert_select "input#settings_projects_table_show_description[checked]"
+    assert_select "input#settings_projects_table_show_done_bar[checked]"
   end
 
   test "valid settings are saved" do
@@ -65,6 +70,24 @@ class PluginSettingsPageTest < Redmine::IntegrationTest
     assert_select "input#settings_trend_weeks[value='40']"
     assert_select "select#settings_default_display option[selected][value=board]"
     assert_equal "9", Setting.plugin_redmine_rubylode_projects["trend_weeks"]
+  end
+
+  test "the table settings are saved, and a bad column or limit is refused" do
+    post PATH, params: { settings: valid_settings(welcome_projects_table: "1", welcome_projects_table_column: "left", projects_table_limit: "35",
+                                                  projects_table_show_description: "0", projects_table_show_done_bar: "0") }
+    assert_redirected_to PATH
+    saved = RubylodeProjects::PluginSettings.new
+    assert saved.welcome_table_shown?
+    assert_equal "left", saved.welcome_table_column
+    assert_equal 35, saved.table_limit
+    refute saved.table_description_shown?
+    refute saved.table_done_bar_shown?
+    post PATH, params: { settings: valid_settings(welcome_projects_table_column: "top") }
+    assert_response :unprocessable_entity
+    post PATH, params: { settings: valid_settings(projects_table_limit: "101") }
+    assert_response :unprocessable_entity
+    assert_select ".flash.error", text: /from 1 to 100/
+    assert_select "input#settings_projects_table_limit[value='101']"
   end
 
   test "an unknown display or column is refused" do

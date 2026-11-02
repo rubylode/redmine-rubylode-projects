@@ -22,13 +22,20 @@ module RubylodeProjects
     DISPLAY_CHOICES = %w[list board redmine].freeze
     COLUMN_CHOICES = %w[open_issues overdue closed_week percent_done trend last_activity].freeze
     TREND_WEEKS_RANGE = (4..26)
+    WELCOME_COLUMN_CHOICES = %w[left right].freeze
+    TABLE_LIMIT_RANGE = ProjectsTable::LIMIT_RANGE
     PLUGIN_ID = :redmine_rubylode_projects
 
     DEFAULTS = {
       "default_display" => "list",
       "show_summary" => "1",
       "added_columns" => %w[open_issues overdue percent_done trend],
-      "trend_weeks" => "12"
+      "trend_weeks" => "12",
+      "welcome_projects_table" => "0",
+      "welcome_projects_table_column" => "right",
+      "projects_table_limit" => "20",
+      "projects_table_show_description" => "1",
+      "projects_table_show_done_bar" => "1"
     }.freeze
 
     # An unsaved hash can be passed in (the settings form on a failed save, tests); by default the saved one is read.
@@ -48,6 +55,12 @@ module RubylodeProjects
       end
       unless valid_trend_weeks?(@values.fetch("trend_weeks", DEFAULTS["trend_weeks"]))
         messages << I18n.t(:rubylode_projects_error_trend_weeks, first: TREND_WEEKS_RANGE.first, last: TREND_WEEKS_RANGE.last)
+      end
+      unless WELCOME_COLUMN_CHOICES.include?(@values.fetch("welcome_projects_table_column", DEFAULTS["welcome_projects_table_column"]))
+        messages << I18n.t(:rubylode_projects_error_welcome_column)
+      end
+      unless valid_table_limit?(@values.fetch("projects_table_limit", DEFAULTS["projects_table_limit"]))
+        messages << I18n.t(:rubylode_projects_error_table_limit, first: TABLE_LIMIT_RANGE.first, last: TABLE_LIMIT_RANGE.last)
       end
       unknown = submitted_columns - COLUMN_CHOICES
       messages << I18n.t(:rubylode_projects_error_columns, names: unknown.join(", ")) if unknown.any?
@@ -81,7 +94,37 @@ module RubylodeProjects
       valid_trend_weeks?(@values["trend_weeks"]) ? Integer(@values["trend_weeks"].to_s, 10) : Integer(DEFAULTS["trend_weeks"])
     end
 
+    def welcome_table_shown? = switched_on?("welcome_projects_table")
+
+    def welcome_table_column
+      choice = @values["welcome_projects_table_column"]
+      WELCOME_COLUMN_CHOICES.include?(choice) ? choice : DEFAULTS["welcome_projects_table_column"]
+    end
+
+    # An unusable value reads as the default; a whole number outside the range is held to it.
+    def table_limit
+      Integer(@values["projects_table_limit"].to_s, 10).clamp(TABLE_LIMIT_RANGE)
+    rescue ArgumentError, TypeError
+      Integer(DEFAULTS["projects_table_limit"])
+    end
+
+    def table_description_shown? = switched_on?("projects_table_show_description")
+
+    def table_done_bar_shown? = switched_on?("projects_table_show_done_bar")
+
     private
+
+    def switched_on?(key)
+      return DEFAULTS[key] == "1" unless @values.key?(key)
+
+      !%w[0 false].include?(@values[key].to_s)
+    end
+
+    def valid_table_limit?(value)
+      TABLE_LIMIT_RANGE.cover?(Integer(value.to_s, 10))
+    rescue ArgumentError, TypeError
+      false
+    end
 
     def saved_values
       Setting.send(:"plugin_#{PLUGIN_ID}") || {}

@@ -29,3 +29,30 @@
                        min: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.first, max: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.last %>
   <em class="info"><%= l(:rubylode_projects_setting_trend_weeks_help, first: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.first, last: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.last) %></em>
 </p>
+<p>
+  <label for="settings_welcome_projects_table"><%= l(:rubylode_projects_setting_welcome_table) %></label>
+  <%= hidden_field_tag "settings[welcome_projects_table]", "0", id: nil %>
+  <%= check_box_tag "settings[welcome_projects_table]", "1", current.welcome_table_shown?, id: "settings_welcome_projects_table" %>
+</p>
+<p>
+  <label for="settings_welcome_projects_table_column"><%= l(:rubylode_projects_setting_welcome_table_column) %></label>
+  <%= select_tag "settings[welcome_projects_table_column]",
+                 options_for_select(RubylodeProjects::PluginSettings::WELCOME_COLUMN_CHOICES.map { |choice| [l(:"rubylode_projects_welcome_column_#{choice}"), choice] }, current.welcome_table_column),
+                 id: "settings_welcome_projects_table_column" %>
+</p>
+<p>
+  <label for="settings_projects_table_limit"><%= l(:rubylode_projects_setting_table_limit) %></label>
+  <%= number_field_tag "settings[projects_table_limit]", settings.to_h.stringify_keys.fetch("projects_table_limit", current.table_limit), id: "settings_projects_table_limit",
+                       min: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.first, max: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.last %>
+  <em class="info"><%= l(:rubylode_projects_setting_table_limit_help, first: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.first, last: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.last) %></em>
+</p>
+<p>
+  <label for="settings_projects_table_show_description"><%= l(:rubylode_projects_setting_table_show_description) %></label>
+  <%= hidden_field_tag "settings[projects_table_show_description]", "0", id: nil %>
+  <%= check_box_tag "settings[projects_table_show_description]", "1", current.table_description_shown?, id: "settings_projects_table_show_description" %>
+</p>
+<p>
+  <label for="settings_projects_table_show_done_bar"><%= l(:rubylode_projects_setting_table_show_done_bar) %></label>
+  <%= hidden_field_tag "settings[projects_table_show_done_bar]", "0", id: nil %>
+  <%= check_box_tag "settings[projects_table_show_done_bar]", "1", current.table_done_bar_shown?, id: "settings_projects_table_show_done_bar" %>
+</p>

@@ -1,0 +1,66 @@
+<%# A table of the projects the viewer may see, with open and closed issue counts. It is the welcome page block, the
+    {{projects_table}} macro, and a partial other plugins and themes can render:
+
+      render partial: "rubylode_projects/projects_table", locals: { title: "Our projects", limit: 10, subprojects: false }
+
+    Every local is optional.
+      title            the caption, default "Projects"
+      limit            the most rows, 1 to 100, default the "Rows in the projects table" setting
+      subprojects      true (default) lists subprojects under their parents, each counting its own issues;
+                       false lists top-level projects only, each counting everything under it
+      show_description true or false, default the plugin setting
+      show_done_bar    true or false, default the plugin setting
+      user             whose view of the projects and issues it is, default User.current
+    Nothing is rendered when the user may see no project. %>
+<% settings = RubylodeProjects::PluginSettings.new %>
+<% table = RubylodeProjects::ProjectsTable.new(user: local_assigns.fetch(:user, User.current),
+                                               limit: local_assigns.fetch(:limit, settings.table_limit),
+                                               include_subprojects: local_assigns.fetch(:subprojects, true),
+                                               issues_path: ->(project) { project_issues_path(project) }) %>
+<% rows = table.rows %>
+<% show_description = local_assigns.fetch(:show_description, settings.table_description_shown?) %>
+<% show_done_bar = local_assigns.fetch(:show_done_bar, settings.table_done_bar_shown?) %>
+<% if rows.any? %>
+  <% unless @rubylode_projects_table_stylesheet_requested %>
+    <% @rubylode_projects_table_stylesheet_requested = true %>
+    <% content_for :header_tags, stylesheet_link_tag("projects", plugin: "redmine_rubylode_projects") %>
+  <% end %>
+  <div class="rubylode-projects-table-block" data-rubylode-projects="table">
+    <table class="rubylode-projects-table">
+      <caption><%= local_assigns.fetch(:title, nil).presence || l(:label_project_plural) %></caption>
+      <thead>
+        <tr>
+          <th scope="col"><%= l(:field_name) %></th>
+          <% if show_description %><th scope="col"><%= l(:field_description) %></th><% end %>
+          <th scope="col" class="rubylode-projects-table-number"><%= l(:rubylode_projects_tip_open) %></th>
+          <th scope="col" class="rubylode-projects-table-number"><%= l(:rubylode_projects_closed) %></th>
+          <% if show_done_bar %><th scope="col"><%= l(:rubylode_projects_done) %></th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% rows.each do |row| %>
+          <tr data-project-id="<%= row.project.id %>">
+            <th scope="row" class="rubylode-projects-table-name" style="--rubylode-projects-table-level: <%= row.level %>">
+              <%= link_to row.project.name, project_path(row.project) %>
+            </th>
+            <% if show_description %><td class="rubylode-projects-table-description" title="<%= row.description %>"><%= row.description %></td><% end %>
+            <td class="rubylode-projects-table-number">
+              <%= link_to number_with_delimiter(row.open_count), row.open_url, class: "rubylode-projects-table-open",
+                          "aria-label": l(:rubylode_projects_table_open_link, project: row.project.name, count: row.open_count) %>
+            </td>
+            <td class="rubylode-projects-table-number">
+              <%= link_to number_with_delimiter(row.closed_count), row.closed_url, class: "rubylode-projects-table-closed",
+                          "aria-label": l(:rubylode_projects_table_closed_link, project: row.project.name, count: row.closed_count) %>
+            </td>
+            <% if show_done_bar %>
+              <td class="rubylode-projects-table-done">
+                <span class="rubylode-projects-table-bar" aria-hidden="true"><span class="rubylode-projects-table-bar-fill" style="width: <%= row.done_percentage %>%"></span></span>
+                <span class="rubylode-projects-table-percentage"><%= row.done_percentage %>%</span>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
