@@ -1,0 +1,29 @@
+<%# One bar per tracker: open and closed counts, the share done, and links to the issue list, the summary and the Gantt chart. %>
+<% project = overview.project %>
+<% link = overview.issue_list_link(project_issues_path(project)) %>
+<div class="rubylode-overview-card rubylode-overview-trackers">
+  <h3><%= l(:rubylode_projects_by_tracker) %></h3>
+  <% overview.tracker_tallies.each do |tally| %>
+    <div class="rubylode-overview-tracker" data-rubylode-tracker="<%= tally.tracker.id %>">
+      <div class="rubylode-overview-tracker-heading">
+        <%= link_to tally.tracker.name, link.tracker(tally.tracker.id), class: "rubylode-overview-tracker-name" %>
+        <span class="rubylode-overview-tracker-counts">
+          <%= t(:rubylode_projects_open_and_closed_html, open: content_tag(:strong, number_with_delimiter(tally.open_count)), closed: number_with_delimiter(tally.closed_count)) %>
+        </span>
+      </div>
+      <div class="rubylode-overview-meter" role="presentation">
+        <div class="rubylode-overview-meter-fill" style="width: <%= tally.done_percentage %>%"></div>
+      </div>
+      <div class="rubylode-overview-tracker-note">
+        <%= l(:rubylode_projects_done_of_total, percentage: tally.done_percentage, total: number_with_delimiter(tally.total_count)) %>
+      </div>
+    </div>
+  <% end %>
+  <p class="rubylode-overview-links">
+    <%= link_to l(:label_issue_view_all), project_issues_path(project, set_filter: 1) %>
+    <%= link_to l(:field_summary), project_issues_report_path(project) %>
+    <% if overview.gantt? %>
+      <%= link_to l(:label_gantt), project_gantt_path(project) %>
+    <% end %>
+  </p>
+</div>

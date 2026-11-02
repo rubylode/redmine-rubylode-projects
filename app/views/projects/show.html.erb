@@ -1,0 +1,19 @@
+<%# Rubylode Projects: a project's Overview page. Redmine's own template is rendered as the installed Redmine has it and is
+    passed through untouched inside a wrapper; nothing in it is parsed or rewritten. By default the cards go under its
+    heading and the wrapper's rubylode-projects-cards-shown class lets the stylesheet hide the blocks the cards replace
+    (display: none, so screen readers skip them too). With ?view=classic the wrapper has no such class and Redmine's
+    blocks all show, with a link back to the cards. %>
+<% redmine_page = RubylodeProjects::RedmineTemplate.render(self, "projects/show") %>
+<% classic = params[:view] == "classic" %>
+<div class="rubylode-projects-redmine-page<%= ' rubylode-projects-cards-shown' unless classic %>">
+<% if classic %>
+<%= RubylodeProjects::HeadingInsertion.after_first_heading(
+      redmine_page,
+      render(partial: "rubylode_projects/view_switch", locals: { project: @project, to_classic: false })) %>
+<% else %>
+<%= RubylodeProjects::HeadingInsertion.after_first_heading(
+      redmine_page,
+      render(partial: "rubylode_projects/overview",
+             locals: { overview: @rubylode_project_overview || RubylodeProjects::ProjectOverview.new(@project, user: User.current) })) %>
+<% end %>
+</div>

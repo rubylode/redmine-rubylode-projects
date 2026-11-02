@@ -1,0 +1,11 @@
+<%# The subprojects the user may see, as chips. %>
+<% if overview.subprojects.any? %>
+<div class="rubylode-overview-card rubylode-overview-subprojects">
+  <h3><%= l(:label_subproject_plural) %></h3>
+  <div class="rubylode-overview-chips">
+    <% overview.subprojects.each do |subproject| %>
+      <%= link_to subproject.name, project_path(subproject), class: "rubylode-overview-chip" %>
+    <% end %>
+  </div>
+</div>
+<% end %>

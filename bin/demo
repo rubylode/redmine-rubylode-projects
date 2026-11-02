@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Runs the throwaway Redmine this plugin is tried in (docker-compose.yml, http://localhost:3009).
+#
+#   ruby bin/demo up        start it and load the demo data (once; running it again changes nothing)
+#   ruby bin/demo seed      load the demo data into a Redmine that is already running
+#   ruby bin/demo restart   restart Redmine, to pick up a change to the plugin
+#   ruby bin/demo down      stop it, keep the data
+#   ruby bin/demo reset     stop it and wipe the data
+#
+# Sign in as admin / admin, or as one of the demo people (ada.lovelace and others) with demo-password-1.
+require "net/http"
+
+ROOT = File.expand_path("..", __dir__)
+PORT = 3009
+READY_SECONDS = 300
+SEED_PATH = "plugins/redmine_rubylode_projects/test/seed.rb"
+
+def compose(*arguments)
+  system("docker", "compose", *arguments, chdir: ROOT) || abort("docker compose #{arguments.join(' ')} failed")
+end
+
+def wait_until_ready
+  uri = URI("http://localhost:#{PORT}/login")
+  deadline = Time.now + READY_SECONDS
+  loop do
+    begin
+      return puts("Redmine is up at http://localhost:#{PORT}") if Net::HTTP.get_response(uri).code == "200"
+    rescue SystemCallError, EOFError, Net::ReadTimeout
+      nil
+    end
+    abort("Redmine did not answer within #{READY_SECONDS} seconds") if Time.now > deadline
+    sleep 3
+  end
+end
+
+def seed
+  compose("exec", "-T", "redmine", "bin/rails", "runner", SEED_PATH)
+end
+
+case ARGV.first
+when "up"
+  compose("up", "-d", "redmine")
+  wait_until_ready
+  seed
+when "seed"
+  seed
+when "restart"
+  compose("restart", "redmine")
+  wait_until_ready
+when "down"
+  compose("down")
+when "reset"
+  compose("down", "-v")
+else
+  abort(File.read(__FILE__)[/\A#!.*?\n\n((?:#.*\n)+)/m, 1].to_s.gsub(/^# ?/, ""))
+end

@@ -1,0 +1,5 @@
+<%# The project's description as a one-line subtitle: plain text, cut to one line by the stylesheet, the whole of it on hover. %>
+<% if project.description.present? %>
+  <% subtitle = CGI.unescapeHTML(strip_tags(textilizable(project.description, project: project)).to_str).squish %>
+  <%= content_tag(:p, subtitle, class: "rubylode-projects-subtitle", title: subtitle) if subtitle.present? %>
+<% end %>

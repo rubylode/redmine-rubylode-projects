@@ -1,0 +1,862 @@
+/* Rubylode Projects: the Overview cards and the board pages.
+   Every colour and size is a --rubylode-projects-* custom property. The defaults below sit in :where(:root), which has no
+   specificity, so a theme wins whenever it sets one, on :root or on any element, whatever order the stylesheets load in.
+   The README lists them under "Theming". */
+
+:where(:root) {
+  /* Colours */
+  --rubylode-projects-page-background: #f2f4f7;
+  --rubylode-projects-card-background: #ffffff;
+  --rubylode-projects-card-border-color: #e1e5eb;
+  --rubylode-projects-card-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --rubylode-projects-text-color: inherit;
+  --rubylode-projects-muted-text-color: #5d6672;
+  --rubylode-projects-label-text-color: #4a5360;
+  --rubylode-projects-accent-color: #1f5f8b;
+  --rubylode-projects-opened-color: #9cc3e0;
+  --rubylode-projects-closed-color: #1f5f8b;
+  --rubylode-projects-done-color: #4caf50;
+  --rubylode-projects-meter-track-color: #e3e8ee;
+  --rubylode-projects-grid-line-color: #e7eaef;
+  --rubylode-projects-chip-background: #eaf2f9;
+  --rubylode-projects-chip-border-color: #cfe0ee;
+  --rubylode-projects-chip-text-color: #1f5f8b;
+  --rubylode-projects-waiting-background: #f1f3f6;
+  --rubylode-projects-waiting-text-color: #4a5360;
+  --rubylode-projects-priority-background: #fdecea;
+  --rubylode-projects-priority-text-color: #a1281c;
+
+  /* Tooltips and popovers: they take the card colours, so a dark theme that restyles the cards restyles them too */
+  --rubylode-projects-tooltip-background: var(--rubylode-projects-card-background);
+  --rubylode-projects-tooltip-text-color: var(--rubylode-projects-text-color);
+  --rubylode-projects-tooltip-border-color: var(--rubylode-projects-card-border-color);
+  --rubylode-projects-tooltip-shadow: 0 8px 24px rgba(16, 24, 40, 0.22);
+  --rubylode-projects-highlight-color: color-mix(in srgb, var(--rubylode-projects-accent-color) 14%, transparent);
+  --rubylode-projects-dim-opacity: 0.45;
+
+  /* Sizes */
+  --rubylode-projects-gap: 14px;
+  --rubylode-projects-card-padding: 14px 16px;
+  --rubylode-projects-card-radius: 10px;
+  --rubylode-projects-chip-radius: 8px;
+  --rubylode-projects-tile-minimum-width: 170px;
+  --rubylode-projects-meter-height: 8px;
+  --rubylode-projects-swatch-size: 10px;
+  --rubylode-projects-member-label-width: 8em;
+  --rubylode-projects-time-label-width: 12em;
+  --rubylode-projects-heading-size: 1.05em;
+  --rubylode-projects-tile-value-size: 2em;
+  --rubylode-projects-label-size: 0.8em;
+  --rubylode-projects-small-text-size: 0.92em;
+  --rubylode-projects-subtitle-size: 1em;
+  --rubylode-projects-axis-label-size: 11px;
+  --rubylode-projects-tooltip-minimum-width: 15em;
+  --rubylode-projects-tooltip-maximum-width: 26em;
+  --rubylode-projects-space-small: 0.35em;
+  --rubylode-projects-space-medium: 0.6em;
+  --rubylode-projects-space-large: 1em;
+}
+
+/* With the cards shown, Redmine's blocks they replace are hidden: the description (now the subtitle), issue tracking,
+   time tracking, members and subprojects. display: none takes them out of what screen readers read too. The classic view
+   (?view=classic) has no rubylode-projects-cards-shown class, so everything shows there. */
+
+.rubylode-projects-cards-shown .splitcontentleft > .wiki,
+.rubylode-projects-cards-shown .splitcontent .issues.box,
+.rubylode-projects-cards-shown .splitcontent .spent_time.box,
+.rubylode-projects-cards-shown .splitcontent .members.box,
+.rubylode-projects-cards-shown .splitcontent .projects.box {
+  display: none;
+}
+
+/* The subtitle under the title, and the link to the classic page */
+
+.rubylode-projects-subtitle {
+  margin: calc(-1 * var(--rubylode-projects-space-small)) 0 var(--rubylode-projects-space-medium);
+  overflow: hidden;
+  color: var(--rubylode-projects-muted-text-color);
+  font-size: var(--rubylode-projects-subtitle-size);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rubylode-projects-view-switch-line {
+  margin: var(--rubylode-projects-space-medium) 0;
+  font-size: var(--rubylode-projects-small-text-size);
+  text-align: right;
+}
+
+.rubylode-overview .rubylode-projects-view-switch-line {
+  margin: 0;
+}
+
+/* The card area */
+
+.rubylode-overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rubylode-projects-gap);
+  margin: 0 0 var(--rubylode-projects-space-large);
+  padding: var(--rubylode-projects-gap);
+  border-radius: var(--rubylode-projects-card-radius);
+  background: var(--rubylode-projects-page-background);
+  color: var(--rubylode-projects-text-color);
+}
+
+.rubylode-overview h3 {
+  margin: 0 0 var(--rubylode-projects-space-large);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--rubylode-projects-heading-size);
+}
+
+.rubylode-overview-card {
+  min-width: 0;
+  padding: var(--rubylode-projects-card-padding);
+  border: 1px solid var(--rubylode-projects-card-border-color);
+  border-radius: var(--rubylode-projects-card-radius);
+  background: var(--rubylode-projects-card-background);
+  box-shadow: var(--rubylode-projects-card-shadow);
+}
+
+.rubylode-overview-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--rubylode-projects-space-medium) var(--rubylode-projects-space-large);
+  margin-bottom: var(--rubylode-projects-space-medium);
+}
+
+.rubylode-overview-card-header h3 {
+  margin: 0;
+}
+
+.rubylode-overview-card-note,
+.rubylode-overview-empty {
+  margin: var(--rubylode-projects-space-medium) 0 0;
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+/* Layout: four tiles, then two rows of a wide card beside a narrow one. Stacks on narrow screens. */
+
+.rubylode-overview-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--rubylode-projects-tile-minimum-width), 1fr));
+  gap: var(--rubylode-projects-gap);
+}
+
+.rubylode-overview-row {
+  display: grid;
+  gap: var(--rubylode-projects-gap);
+  align-items: start;
+}
+
+.rubylode-overview-row-wide-first {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+.rubylode-overview-row-even {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.rubylode-overview-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rubylode-projects-gap);
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .rubylode-overview-row-wide-first {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Tiles */
+
+.rubylode-overview-tile-label,
+.rubylode-overview-member-row dt,
+.rubylode-overview-time-totals dt {
+  color: var(--rubylode-projects-label-text-color);
+  font-size: var(--rubylode-projects-label-size);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rubylode-overview-tile-value {
+  margin: var(--rubylode-projects-space-small) 0;
+  font-size: var(--rubylode-projects-tile-value-size);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.rubylode-overview-tile-value a,
+.rubylode-overview-tile-value a:visited {
+  color: inherit;
+}
+
+.rubylode-overview-tile-note {
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-overview-tile-body {
+  display: flex;
+  align-items: center;
+  gap: var(--rubylode-projects-gap);
+}
+
+.rubylode-overview-tile-body .rubylode-overview-meter {
+  flex: 1;
+}
+
+/* Meters: the done bar and the tracker bars */
+
+.rubylode-overview-meter {
+  height: var(--rubylode-projects-meter-height);
+  overflow: hidden;
+  border-radius: calc(var(--rubylode-projects-meter-height) / 2);
+  background: var(--rubylode-projects-meter-track-color);
+}
+
+.rubylode-overview-meter-fill {
+  height: 100%;
+  border-radius: calc(var(--rubylode-projects-meter-height) / 2);
+  background: var(--rubylode-projects-accent-color);
+}
+
+.rubylode-overview-meter-done .rubylode-overview-meter-fill {
+  background: var(--rubylode-projects-done-color);
+}
+
+/* Weekly chart */
+
+.rubylode-overview-legend {
+  display: flex;
+  gap: var(--rubylode-projects-space-large);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-overview-swatch {
+  display: inline-block;
+  width: var(--rubylode-projects-swatch-size);
+  height: var(--rubylode-projects-swatch-size);
+  margin-right: var(--rubylode-projects-space-small);
+  border-radius: 2px;
+}
+
+.rubylode-overview-swatch-opened {
+  background: var(--rubylode-projects-opened-color);
+}
+
+.rubylode-overview-swatch-closed {
+  background: var(--rubylode-projects-closed-color);
+}
+
+.rubylode-overview-bar-opened {
+  fill: var(--rubylode-projects-opened-color);
+}
+
+.rubylode-overview-bar-closed {
+  fill: var(--rubylode-projects-closed-color);
+}
+
+.rubylode-overview-chart-graphic {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rubylode-overview-grid-line {
+  stroke: var(--rubylode-projects-grid-line-color);
+  stroke-width: 1;
+}
+
+.rubylode-overview-axis-label {
+  fill: var(--rubylode-projects-muted-text-color);
+  font-size: var(--rubylode-projects-axis-label-size);
+}
+
+.rubylode-overview-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* By tracker */
+
+.rubylode-overview-tracker {
+  margin-bottom: var(--rubylode-projects-space-large);
+}
+
+.rubylode-overview-tracker-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--rubylode-projects-space-large);
+  margin-bottom: var(--rubylode-projects-space-small);
+}
+
+.rubylode-overview-tracker-name {
+  font-weight: 600;
+  font-size: var(--rubylode-projects-heading-size);
+}
+
+.rubylode-overview-tracker-note {
+  margin-top: var(--rubylode-projects-space-small);
+  color: var(--rubylode-projects-muted-text-color);
+  font-size: var(--rubylode-projects-small-text-size);
+}
+
+.rubylode-overview-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rubylode-projects-space-large);
+  margin: 0;
+  padding-top: var(--rubylode-projects-space-medium);
+  border-top: 1px solid var(--rubylode-projects-card-border-color);
+}
+
+/* In progress and urgent */
+
+.rubylode-overview-count {
+  color: var(--rubylode-projects-muted-text-color);
+  font-weight: normal;
+}
+
+.rubylode-overview-issue-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rubylode-overview-issue {
+  display: grid;
+  grid-template-columns: 4.5em auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--rubylode-projects-space-medium);
+  padding: var(--rubylode-projects-space-medium) 0;
+  border-top: 1px solid var(--rubylode-projects-card-border-color);
+}
+
+.rubylode-overview-issue-number,
+.rubylode-overview-issue-number:visited,
+.rubylode-overview-issue-project,
+.rubylode-overview-issue-tracker {
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-overview-issue-subject {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rubylode-overview-issue-project {
+  margin-right: var(--rubylode-projects-space-small);
+}
+
+.rubylode-overview-issue-project::after {
+  content: " ·";
+}
+
+/* Chips: statuses, priorities and subprojects */
+
+.rubylode-overview-chip {
+  display: inline-block;
+  padding: 0.15em var(--rubylode-projects-space-medium);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: var(--rubylode-projects-small-text-size);
+  white-space: nowrap;
+}
+
+.rubylode-overview-status.is-in-progress {
+  background: var(--rubylode-projects-chip-background);
+  color: var(--rubylode-projects-chip-text-color);
+  font-weight: 600;
+}
+
+.rubylode-overview-status.is-waiting {
+  background: var(--rubylode-projects-waiting-background);
+  color: var(--rubylode-projects-waiting-text-color);
+}
+
+.rubylode-overview-priority {
+  background: var(--rubylode-projects-priority-background);
+  color: var(--rubylode-projects-priority-text-color);
+}
+
+.rubylode-overview-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rubylode-projects-space-medium);
+}
+
+a.rubylode-overview-chip,
+a.rubylode-overview-chip:visited {
+  padding: var(--rubylode-projects-space-small) var(--rubylode-projects-space-large);
+  border-color: var(--rubylode-projects-chip-border-color);
+  border-radius: var(--rubylode-projects-chip-radius);
+  background: var(--rubylode-projects-chip-background);
+  color: var(--rubylode-projects-chip-text-color);
+  font-weight: 600;
+}
+
+/* Members and time */
+
+.rubylode-overview-members dl,
+.rubylode-overview-time-totals {
+  margin: 0 0 var(--rubylode-projects-space-medium);
+}
+
+.rubylode-overview-member-row,
+.rubylode-overview-time-totals > div {
+  display: grid;
+  grid-template-columns: var(--rubylode-projects-member-label-width) minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--rubylode-projects-space-large);
+  padding: var(--rubylode-projects-space-small) 0;
+}
+
+.rubylode-overview-time-totals > div {
+  grid-template-columns: var(--rubylode-projects-time-label-width) minmax(0, 1fr);
+}
+
+.rubylode-overview-member-row dd,
+.rubylode-overview-time-totals dd {
+  margin: 0;
+}
+
+/* Interactivity: the chart's weeks, the tile popovers and the tracker cards (assets/javascripts/overview.js).
+   The weeks, tiles and tracker names are ordinary links; the script only adds the cards and the highlight. */
+
+.rubylode-overview-chart,
+.rubylode-overview-tile,
+.rubylode-overview-tracker {
+  position: relative;
+}
+
+.rubylode-overview-legend-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.rubylode-overview-legend-toggle[aria-pressed="false"] {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.rubylode-overview-legend-toggle:focus-visible {
+  outline: 2px solid var(--rubylode-projects-accent-color);
+  outline-offset: 2px;
+}
+
+.rubylode-overview-chart.hides-opened .rubylode-overview-bar-opened,
+.rubylode-overview-chart.hides-closed .rubylode-overview-bar-closed {
+  display: none;
+}
+
+.rubylode-overview-week,
+.rubylode-overview-week:hover {
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+}
+
+.rubylode-overview-week-highlight {
+  fill: var(--rubylode-projects-highlight-color);
+  opacity: 0;
+}
+
+.rubylode-overview-week-target {
+  fill: transparent;
+}
+
+.rubylode-overview-week.is-active .rubylode-overview-week-highlight {
+  opacity: 1;
+}
+
+.rubylode-overview-week:focus-visible .rubylode-overview-week-highlight {
+  opacity: 1;
+  stroke: var(--rubylode-projects-accent-color);
+  stroke-width: 2;
+}
+
+.rubylode-overview-chart.is-previewing .rubylode-overview-week:not(.is-active) .rubylode-overview-bar {
+  opacity: var(--rubylode-projects-dim-opacity);
+}
+
+/* Reached by keyboard, the table with the figures and both issue lists for each week shows itself. */
+.rubylode-overview-visually-hidden:focus-within {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.rubylode-overview-tooltip {
+  position: absolute;
+  z-index: 30;
+  min-width: var(--rubylode-projects-tooltip-minimum-width);
+  max-width: var(--rubylode-projects-tooltip-maximum-width);
+  padding: var(--rubylode-projects-space-medium) var(--rubylode-projects-space-large);
+  border: 1px solid var(--rubylode-projects-tooltip-border-color);
+  border-radius: var(--rubylode-projects-chip-radius);
+  background: var(--rubylode-projects-tooltip-background);
+  box-shadow: var(--rubylode-projects-tooltip-shadow);
+  color: var(--rubylode-projects-tooltip-text-color);
+  font-size: var(--rubylode-projects-small-text-size);
+  line-height: 1.4;
+  text-align: left;
+}
+
+.rubylode-overview-tooltip[hidden] {
+  display: none;
+}
+
+.rubylode-overview-tile-popover,
+.rubylode-overview-tracker-popover {
+  top: calc(100% - 6px);
+  left: 0;
+}
+
+.rubylode-overview-tooltip-title {
+  margin-bottom: var(--rubylode-projects-space-small);
+  font-weight: 600;
+}
+
+.rubylode-overview-tooltip-figures {
+  margin: 0;
+}
+
+.rubylode-overview-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--rubylode-projects-space-large);
+}
+
+.rubylode-overview-tooltip-row dt {
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-overview-tooltip-row dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.rubylode-overview-tooltip-heading {
+  margin-top: var(--rubylode-projects-space-medium);
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-overview-tooltip-list,
+.rubylode-overview-tooltip-issues {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rubylode-overview-tooltip-links {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--rubylode-projects-space-medium);
+  padding-top: var(--rubylode-projects-space-small);
+  border-top: 1px solid var(--rubylode-projects-tooltip-border-color);
+}
+
+.rubylode-overview-tooltip-issues li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--rubylode-projects-space-medium);
+  padding: var(--rubylode-projects-space-small) 0;
+}
+
+.rubylode-overview-tooltip-issue-number {
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-overview-tooltip-issue-subject {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rubylode-overview-tooltip-issue-status {
+  background: var(--rubylode-projects-waiting-background);
+  color: var(--rubylode-projects-waiting-text-color);
+}
+
+.rubylode-overview-tooltip-see-all {
+  display: block;
+  margin-top: var(--rubylode-projects-space-small);
+  font-weight: 600;
+}
+
+.rubylode-overview-tooltip-empty {
+  margin: 0;
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+/* The number, or the tracker's name, is the link; its stretched box makes the whole tile or row click through to it.
+   The card sits above that box so its own links still work. */
+.rubylode-overview-tile-value a::after,
+.rubylode-overview-tracker-name::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.rubylode-overview-tile-value a:focus-visible::after,
+.rubylode-overview-tracker-name:focus-visible::after {
+  outline: 2px solid var(--rubylode-projects-accent-color);
+  border-radius: var(--rubylode-projects-card-radius);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rubylode-overview-bar,
+  .rubylode-overview-week-highlight {
+    transition: opacity 120ms ease-out;
+  }
+
+  .rubylode-overview-tooltip {
+    animation: rubylode-overview-tooltip-in 100ms ease-out;
+  }
+
+  @keyframes rubylode-overview-tooltip-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* The projects list: the summary above it, and the Open, Overdue, Closed, % done and Trend columns.
+   The summary reuses the Overview's cards, tiles, meters, chart and tooltips; only what is new is below. */
+
+:where(:root) {
+  --rubylode-projects-summary-tile-minimum-width: 130px;
+  --rubylode-projects-overdue-color: #c0392b;
+  --rubylode-projects-progress-width: 6.5em;
+  --rubylode-projects-progress-height: 6px;
+  --rubylode-projects-progress-track-color: var(--rubylode-projects-meter-track-color);
+  --rubylode-projects-progress-fill-color: var(--rubylode-projects-done-color);
+  --rubylode-projects-bar-fill-color: var(--rubylode-projects-accent-color);
+  --rubylode-projects-bar-track-color: var(--rubylode-projects-meter-track-color);
+  --rubylode-projects-bar-height: 10px;
+  --rubylode-projects-bar-name-width: 9em;
+  --rubylode-projects-sparkline-width: 96px;
+  --rubylode-projects-sparkline-height: 26px;
+  --rubylode-projects-sparkline-line-color: var(--rubylode-projects-closed-color);
+  --rubylode-projects-sparkline-area-color: color-mix(in srgb, var(--rubylode-projects-closed-color) 16%, transparent);
+  --rubylode-projects-sparkline-marker-color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-projects-summary {
+  margin-bottom: var(--rubylode-projects-space-large);
+}
+
+.rubylode-projects-summary-tiles {
+  grid-template-columns: repeat(auto-fit, minmax(var(--rubylode-projects-summary-tile-minimum-width), 1fr));
+}
+
+.rubylode-projects-summary .rubylode-overview-tile-value {
+  font-size: var(--rubylode-projects-tile-value-size);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.rubylode-projects-tile-figure {
+  border-radius: 4px;
+}
+
+.rubylode-projects-tile-figure:focus-visible {
+  outline: 2px solid var(--rubylode-projects-accent-color);
+  outline-offset: 2px;
+}
+
+.rubylode-overview-tooltip-projects {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rubylode-overview-tooltip-projects li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--rubylode-projects-space-large);
+  padding: var(--rubylode-projects-space-small) 0;
+}
+
+/* Where the work is: a name, a bar and a count on a row */
+
+.rubylode-projects-work {
+  position: relative;
+}
+
+.rubylode-projects-bars {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rubylode-projects-bar {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--rubylode-projects-bar-name-width) minmax(0, 1fr) 3em;
+  align-items: center;
+  gap: var(--rubylode-projects-space-medium);
+  padding: var(--rubylode-projects-space-small) 0;
+}
+
+.rubylode-projects-bar-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rubylode-projects-bar .rubylode-overview-meter {
+  display: block;
+  height: var(--rubylode-projects-bar-height);
+  background: var(--rubylode-projects-bar-track-color);
+}
+
+.rubylode-projects-bar-fill {
+  display: block;
+  background: var(--rubylode-projects-bar-fill-color);
+}
+
+.rubylode-projects-bar-count {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.rubylode-projects-bar-name::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.rubylode-projects-bar-name:focus-visible::after {
+  outline: 2px solid var(--rubylode-projects-accent-color);
+  border-radius: var(--rubylode-projects-chip-radius);
+}
+
+/* The columns */
+
+table.list.projects td.rubylode_open_issues,
+table.list.projects td.rubylode_overdue_issues,
+table.list.projects td.rubylode_closed_week {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.rubylode-projects-count-none {
+  color: var(--rubylode-projects-muted-text-color);
+}
+
+.rubylode-projects-count-overdue {
+  color: var(--rubylode-projects-overdue-color);
+  font-weight: 600;
+}
+
+.rubylode-projects-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rubylode-projects-space-medium);
+  text-decoration: none;
+}
+
+.rubylode-projects-progress-track {
+  display: inline-block;
+  width: var(--rubylode-projects-progress-width);
+  height: var(--rubylode-projects-progress-height);
+  overflow: hidden;
+  border-radius: var(--rubylode-projects-progress-height);
+  background: var(--rubylode-projects-progress-track-color);
+}
+
+.rubylode-projects-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--rubylode-projects-progress-fill-color);
+}
+
+.rubylode-projects-progress-label {
+  min-width: 3em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The sparkline. Its card is fixed to the window, so the list's scroll box cannot cut it off. */
+
+.rubylode-spark-host {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+
+.rubylode-spark {
+  display: block;
+  width: var(--rubylode-projects-sparkline-width);
+  height: var(--rubylode-projects-sparkline-height);
+  border-radius: 4px;
+  cursor: crosshair;
+}
+
+.rubylode-spark:focus-visible {
+  outline: 2px solid var(--rubylode-projects-accent-color);
+  outline-offset: 2px;
+}
+
+.rubylode-spark-graphic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rubylode-spark-line {
+  fill: none;
+  stroke: var(--rubylode-projects-sparkline-line-color);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.rubylode-spark-area {
+  fill: var(--rubylode-projects-sparkline-area-color);
+  stroke: none;
+}
+
+.rubylode-spark-marker {
+  stroke: var(--rubylode-projects-sparkline-marker-color);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.rubylode-spark-dot {
+  fill: var(--rubylode-projects-sparkline-line-color);
+}
+
+.rubylode-spark-popover {
+  position: fixed;
+}

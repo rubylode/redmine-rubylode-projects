@@ -1,0 +1,7 @@
+<%# Rubylode Projects: Redmine's board of projects, one page of whole trees at a time, with Redmine's own page links. %>
+<div id="projects-index">
+  <%= render_project_hierarchy(entries) %>
+</div>
+<% if @entry_pages %>
+<span class="pagination"><%= pagination_links_full @entry_pages, @entry_count %></span>
+<% end %>

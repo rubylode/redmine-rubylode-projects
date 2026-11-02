@@ -1,0 +1,68 @@
+<%# Opened against closed per week, drawn on the server as SVG. Each week is a link (to the issues opened that week), so it works
+    with the keyboard and without script; overview.js adds the tooltip and the highlight. The hidden table carries the same
+    figures, with both issue lists, for screen readers. %>
+<% layout = overview.chart_layout %>
+<% details = interaction.weeks %>
+<% slots = layout.week_slots %>
+<% bars_by_week = layout.bars.group_by(&:week) %>
+<% note = local_assigns[:note] || (overview.with_subprojects? ? l(:rubylode_projects_weekly_chart_note_with_subprojects) : l(:rubylode_projects_weekly_chart_note_project_only)) %>
+<div class="rubylode-overview-card rubylode-overview-chart" data-rubylode-chart>
+  <div class="rubylode-overview-card-header">
+    <h3><%= l(:rubylode_projects_weekly_chart_title) %></h3>
+    <ul class="rubylode-overview-legend">
+      <% %i[opened closed].each do |series| %>
+        <li>
+          <button type="button" class="rubylode-overview-legend-toggle" data-series="<%= series %>" aria-pressed="true"
+                  aria-label="<%= l(:rubylode_projects_series_toggle, series: l(:"rubylode_projects_#{series}")) %>">
+            <span class="rubylode-overview-swatch rubylode-overview-swatch-<%= series %>"></span><%= l(:"rubylode_projects_#{series}") %>
+          </button>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <svg class="rubylode-overview-chart-graphic" viewBox="0 0 <%= layout.width %> <%= layout.height %>" role="group"
+       aria-label="<%= l(:rubylode_projects_weekly_chart_description, count: layout.weeks.size) %>">
+    <% layout.grid_lines.each do |line| %>
+      <line class="rubylode-overview-grid-line" x1="<%= layout.plot_left %>" x2="<%= layout.plot_right %>" y1="<%= line.y.round(2) %>" y2="<%= line.y.round(2) %>"></line>
+      <text class="rubylode-overview-axis-label" x="<%= layout.plot_left - 8 %>" y="<%= (line.y + 4).round(2) %>" text-anchor="end"><%= line.value %></text>
+    <% end %>
+    <% slots.each_with_index do |slot, index| %>
+      <% detail = details[index] %>
+      <a class="rubylode-overview-week" href="<%= detail.opened_url %>" data-week-index="<%= index %>" aria-label="<%= detail.summary %>">
+        <rect class="rubylode-overview-week-highlight" x="<%= slot.x.round(2) %>" y="<%= layout.plot_top %>" width="<%= slot.width.round(2) %>" height="<%= layout.height - layout.plot_top %>" rx="4"></rect>
+        <% bars_by_week.fetch(slot.week).each do |bar| %>
+          <rect class="rubylode-overview-bar rubylode-overview-bar-<%= bar.series %>" x="<%= bar.x.round(2) %>" y="<%= bar.y.round(2) %>"
+                width="<%= bar.width.round(2) %>" height="<%= bar.height.round(2) %>" rx="2"></rect>
+        <% end %>
+        <text class="rubylode-overview-axis-label" x="<%= (slot.x + (slot.width / 2)).round(2) %>" y="<%= layout.height - 8 %>" text-anchor="middle">W<%= slot.week.number %></text>
+        <rect class="rubylode-overview-week-target" x="<%= slot.x.round(2) %>" y="<%= layout.plot_top %>" width="<%= slot.width.round(2) %>" height="<%= layout.height - layout.plot_top %>"></rect>
+      </a>
+    <% end %>
+  </svg>
+  <table class="rubylode-overview-visually-hidden">
+    <thead>
+      <tr>
+        <th><%= l(:rubylode_projects_week) %></th><th><%= l(:rubylode_projects_opened) %></th><th><%= l(:rubylode_projects_closed) %></th>
+        <th><%= l(:rubylode_projects_net_change) %></th><th><%= l(:rubylode_projects_open_at_end) %></th><th><%= l(:rubylode_projects_week_issue_lists) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% details.each do |detail| %>
+        <tr data-week-start="<%= detail.week.start_date.iso8601 %>">
+          <th><%= l(:rubylode_projects_week_of, date: format_date(detail.week.start_date)) %></th>
+          <td data-series="opened"><%= detail.week.opened_count %></td>
+          <td data-series="closed"><%= detail.week.closed_count %></td>
+          <td data-series="net"><%= detail.net %></td>
+          <td data-series="open-total"><%= detail.open_total %></td>
+          <td>
+            <a href="<%= detail.opened_url %>"><%= l(:rubylode_projects_tip_opened_link) %></a>
+            <a href="<%= detail.closed_url %>"><%= l(:rubylode_projects_tip_closed_link) %></a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p class="rubylode-overview-card-note">
+    <%= note %>
+  </p>
+</div>

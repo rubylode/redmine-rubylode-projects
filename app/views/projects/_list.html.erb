@@ -1,0 +1,24 @@
+<%# Rubylode Projects: Redmine's own list partial, rendered as the installed Redmine has it and passed through untouched, with the
+    summary above it and the data block for the script below it. On any page but the Projects page (the administration's project
+    list renders this partial too) it is Redmine's partial and nothing else. The summary is left out for ?summary=0, when the
+    setting is off, and when another plugin supplies a summary of its own. %>
+<% list_html = RubylodeProjects::RedmineTemplate.render_partial(self, "projects/list", entries: entries) %>
+<% if controller.is_a?(ProjectsController) && action_name == "index" && @query.is_a?(ProjectQuery) %>
+  <% page = RubylodeProjects::IndexPage.new(query: @query, params: params) %>
+  <% metrics = @query.rubylode_metrics %>
+  <% summary = RubylodeProjects::PortfolioSummary.new(metrics: metrics, project_ids: page.portfolio_project_ids, issues_path: issues_path,
+                                                      project_issues_path: ->(identifier) { project_issues_path(identifier) }) if page.summary_shown? %>
+  <% index_data = RubylodeProjects::IndexData.new(view: self, issues_path: issues_path, summary: summary, spark_data: @rubylode_spark_data || {}, metrics: metrics) %>
+  <% if summary %>
+    <%= render partial: "rubylode_projects/projects_summary", locals: { summary: summary, interaction: index_data.interaction } %>
+  <% end %>
+  <a id="rubylode-projects-list"></a>
+  <%= list_html %>
+  <% if index_data.any? %>
+    <%# The figures behind the cards, for the script to write out as text; json_escape keeps a project name from closing the tag. %>
+    <script type="application/json" data-rubylode-overview-data><%= raw index_data.to_script_json %></script>
+    <%= render partial: "rubylode_projects/trend_table", locals: { spark_data: @rubylode_spark_data || {}, metrics: metrics } if (@rubylode_spark_data || {}).any? %>
+  <% end %>
+<% else %>
+  <%= list_html %>
+<% end %>

@@ -1,0 +1,40 @@
+<%# Open issues per top-level project, the busiest eight, as horizontal bars. Each bar is a link to that project's open issues
+    (subprojects included, as the number was counted); hovering or focusing one shows its figures. %>
+<div class="rubylode-overview-card rubylode-projects-work" data-rubylode-bars>
+  <div class="rubylode-overview-card-header">
+    <h3><%= l(:rubylode_projects_where_the_work_is) %></h3>
+  </div>
+  <% if summary.bars.empty? %>
+    <p class="rubylode-overview-empty"><%= l(:rubylode_projects_no_open_issues) %></p>
+  <% else %>
+    <ul class="rubylode-projects-bars">
+      <% summary.bars.each do |bar| %>
+        <li class="rubylode-projects-bar" data-rubylode-bar="<%= bar.project_id %>">
+          <a class="rubylode-projects-bar-name" href="<%= bar.url %>"><%= bar.name %></a>
+          <span class="rubylode-overview-meter" role="presentation">
+            <span class="rubylode-overview-meter-fill rubylode-projects-bar-fill" style="width: <%= bar.share %>%"></span>
+          </span>
+          <span class="rubylode-projects-bar-count"><%= number_with_delimiter(bar.open_count) %></span>
+        </li>
+      <% end %>
+    </ul>
+    <table class="rubylode-overview-visually-hidden">
+      <caption><%= l(:rubylode_projects_where_the_work_is) %></caption>
+      <thead>
+        <tr>
+          <th><%= l(:field_name) %></th><th><%= l(:rubylode_projects_column_open_issues) %></th>
+          <th><%= l(:rubylode_projects_column_overdue) %></th><th><%= l(:rubylode_projects_week_issue_lists) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% summary.bars.each do |bar| %>
+          <tr data-project-id="<%= bar.project_id %>">
+            <th><%= bar.name %></th><td><%= bar.open_count %></td><td><%= bar.overdue_count %></td>
+            <td><a href="<%= bar.url %>"><%= l(:rubylode_projects_all_open_by_priority) %></a></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  <p class="rubylode-overview-card-note"><%= l(:rubylode_projects_where_the_work_is_note, count: RubylodeProjects::PortfolioSummary::BAR_LIMIT) %></p>
+</div>

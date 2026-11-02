@@ -1,0 +1,25 @@
+<%# The Overview cards, under the page title. Issue cards only when the project tracks issues and the user may see them. %>
+<%= render partial: "rubylode_projects/subtitle", locals: { project: overview.project } %>
+<% interaction = RubylodeProjects::InteractionData.new(overview: overview, view: self) if overview.issue_cards? %>
+<div class="rubylode-overview" data-rubylode-projects="overview">
+  <% if overview.issue_cards? %>
+    <%# The figures behind the tooltips and popovers, for the script to write out as text; json_escape keeps a subject from closing the tag. %>
+    <script type="application/json" data-rubylode-overview-data><%= raw interaction.to_script_json %></script>
+    <%= render partial: "rubylode_projects/tiles", locals: { overview: overview } %>
+    <div class="rubylode-overview-row rubylode-overview-row-wide-first">
+      <%= render partial: "rubylode_projects/weekly_chart", locals: { overview: overview, interaction: interaction } %>
+      <%= render partial: "rubylode_projects/trackers", locals: { overview: overview } %>
+    </div>
+  <% end %>
+  <div class="rubylode-overview-row <%= overview.issue_cards? ? 'rubylode-overview-row-wide-first' : 'rubylode-overview-row-even' %>">
+    <% if overview.issue_cards? %>
+      <%= render partial: "rubylode_projects/urgent_issues", locals: { overview: overview } %>
+    <% end %>
+    <div class="rubylode-overview-column">
+      <%= render partial: "rubylode_projects/members", locals: { overview: overview } %>
+      <%= render partial: "rubylode_projects/subprojects", locals: { overview: overview } %>
+      <%= render partial: "rubylode_projects/time_tracking", locals: { overview: overview } %>
+    </div>
+  </div>
+  <%= render partial: "rubylode_projects/view_switch", locals: { project: overview.project, to_classic: true } %>
+</div>

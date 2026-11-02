@@ -1,0 +1,14 @@
+<%# Members grouped by role, as in Redmine's own members box. %>
+<% if overview.members_by_role.any? %>
+<div class="rubylode-overview-card rubylode-overview-members">
+  <h3><%= l(:label_member_plural) %></h3>
+  <dl>
+    <% overview.members_by_role.each do |role, principals| %>
+      <div class="rubylode-overview-member-row" data-rubylode-role="<%= role.id %>">
+        <dt><%= role.name %></dt>
+        <dd><%= safe_join(principals.map { |principal| link_to_principal(principal) }, ", ") %></dd>
+      </div>
+    <% end %>
+  </dl>
+</div>
+<% end %>

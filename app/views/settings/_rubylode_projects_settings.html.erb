@@ -1,0 +1,31 @@
+<%# Rubylode Projects: Administration, Plugins, Configure. The values are checked in RubylodeProjects::SettingsControllerPatch before they are saved. %>
+<% current = RubylodeProjects::PluginSettings.new(settings) %>
+<p>
+  <label for="settings_default_display"><%= l(:rubylode_projects_setting_default_display) %></label>
+  <%= select_tag "settings[default_display]",
+                 options_for_select(RubylodeProjects::PluginSettings::DISPLAY_CHOICES.map { |choice| [l(:"rubylode_projects_display_#{choice}"), choice] }, current.default_display),
+                 id: "settings_default_display" %>
+  <em class="info"><%= l(:rubylode_projects_setting_default_display_help) %></em>
+</p>
+<p>
+  <label for="settings_show_summary"><%= l(:rubylode_projects_setting_show_summary) %></label>
+  <%= hidden_field_tag "settings[show_summary]", "0", id: nil %>
+  <%= check_box_tag "settings[show_summary]", "1", current.summary_shown?, id: "settings_show_summary" %>
+</p>
+<p>
+  <label><%= l(:rubylode_projects_setting_added_columns) %></label>
+  <%= hidden_field_tag "settings[added_columns][]", "", id: nil %>
+  <% RubylodeProjects::PluginSettings::COLUMN_CHOICES.each do |column| %>
+    <label class="block">
+      <%= check_box_tag "settings[added_columns][]", column, current.added_columns.include?(column), id: "settings_added_columns_#{column}" %>
+      <%= l(:"rubylode_projects_column_#{column}") %>
+    </label>
+  <% end %>
+  <em class="info"><%= l(:rubylode_projects_setting_added_columns_help) %></em>
+</p>
+<p>
+  <label for="settings_trend_weeks"><%= l(:rubylode_projects_setting_trend_weeks) %></label>
+  <%= number_field_tag "settings[trend_weeks]", settings.to_h.stringify_keys.fetch("trend_weeks", current.trend_weeks), id: "settings_trend_weeks",
+                       min: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.first, max: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.last %>
+  <em class="info"><%= l(:rubylode_projects_setting_trend_weeks_help, first: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.first, last: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.last) %></em>
+</p>

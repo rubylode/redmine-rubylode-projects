@@ -1,0 +1,34 @@
+<%# The summary above the project list: seven tiles, the portfolio's opened-against-closed chart (the Overview's own chart partial)
+    and a bar for each of the busiest top-level projects. Tiles and bars are links that work without the script; projects.js
+    adds the cards. The hidden tables carry the same figures for screen readers. %>
+<% combined = summary.combined %>
+<div class="rubylode-overview rubylode-projects-summary" data-rubylode-projects="summary" role="region"
+     aria-label="<%= l(:rubylode_projects_summary_label) %>">
+  <div class="rubylode-overview-tiles rubylode-projects-summary-tiles">
+    <% summary.tiles.each do |tile| %>
+      <div class="rubylode-overview-card rubylode-overview-tile" data-rubylode-tile="<%= tile.key %>">
+        <div class="rubylode-overview-tile-label"><%= l(:"rubylode_projects_tile_#{tile.key}") %></div>
+        <div class="rubylode-overview-tile-value">
+          <% if tile.url %>
+            <%= link_to number_with_delimiter(tile.count), tile.url %>
+          <% elsif tile.key == :projects %>
+            <%= link_to number_with_delimiter(tile.count), "#rubylode-projects-list" %>
+          <% else %>
+            <span class="rubylode-projects-tile-figure" tabindex="0"><%= number_with_delimiter(tile.count) %></span>
+          <% end %>
+        </div>
+        <div class="rubylode-overview-tile-note">
+          <%= l(:"rubylode_projects_tile_note_#{tile.key}", total: number_with_delimiter(combined.total_count)) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="rubylode-overview-row rubylode-overview-row-wide-first">
+    <%= render partial: "rubylode_projects/weekly_chart",
+               locals: { overview: summary, interaction: interaction, note: l(:rubylode_projects_portfolio_chart_note) } %>
+    <%= render partial: "rubylode_projects/where_the_work_is", locals: { summary: summary } %>
+  </div>
+  <% unless summary.project_ids_in_link? %>
+    <p class="rubylode-overview-card-note"><%= l(:rubylode_projects_link_not_limited_note, count: RubylodeProjects::PortfolioSummary::PROJECT_ID_LINK_LIMIT) %></p>
+  <% end %>
+</div>

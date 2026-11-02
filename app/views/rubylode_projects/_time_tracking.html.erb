@@ -1,0 +1,20 @@
+<%# Spent and estimated time, standing in for Redmine's time tracking block, with its links. %>
+<% if overview.time_card? %>
+<% project = overview.project %>
+<div class="rubylode-overview-card rubylode-overview-time">
+  <h3><%= l(:label_time_tracking) %></h3>
+  <% if overview.time_totals? %>
+    <dl class="rubylode-overview-time-totals">
+      <div data-rubylode-time="spent"><dt><%= l(:label_spent_time) %></dt><dd><%= l_hours(overview.spent_hours) %></dd></div>
+      <div data-rubylode-time="estimated"><dt><%= l(:field_estimated_hours) %></dt><dd><%= l_hours(overview.estimated_hours) %></dd></div>
+    </dl>
+  <% end %>
+  <p class="rubylode-overview-links">
+    <% if overview.log_time? %>
+      <%= link_to l(:button_log_time), new_project_time_entry_path(project) %>
+    <% end %>
+    <%= link_to l(:label_details), project_time_entries_path(project) %>
+    <%= link_to l(:label_report), report_project_time_entries_path(project) %>
+  </p>
+</div>
+<% end %>
