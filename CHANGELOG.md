@@ -4,6 +4,11 @@ All notable changes to this plugin. The format follows [Keep a Changelog](https:
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-02
+
+First stable release. A project Overview with counts, a weekly chart and what is urgent, and a summary, extra columns and a board view for the projects list.
+Its name, author and version are ready to list on redmine.org, and the plugin now shows its project address on Administration, Plugins.
+
 ## [0.5.1] - 2026-11-02
 
 ### Fixed
