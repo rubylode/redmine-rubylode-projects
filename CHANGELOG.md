@@ -2,6 +2,12 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.2.1] - 2026-11-03
+
+### Added
+
+- A Rubylode thumbnail at the top of the README.
+
 ## [1.2.0] - 2026-11-02
 
 ### Added

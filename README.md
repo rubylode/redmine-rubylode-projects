@@ -1,5 +1,7 @@
 # Rubylode Projects for Redmine
 
+<p><img src="docs/thumbnail.png" alt="Rubylode Projects plugin" width="160"></p>
+
 TL;DR: a project Overview page with counts, a weekly chart and a list of urgent issues, plus a summary, extra columns and
 paging for the projects list in [Redmine](https://www.redmine.org).
 
