@@ -2,6 +2,13 @@
 
 <p><img src="docs/thumbnail.png" alt="Rubylode Projects plugin" width="160"></p>
 
+[![tests](https://img.shields.io/github/actions/workflow/status/rubylode/redmine-rubylode-projects/tests.yml?branch=main&label=tests)](https://github.com/rubylode/redmine-rubylode-projects/actions/workflows/tests.yml)
+[![security](https://img.shields.io/github/actions/workflow/status/rubylode/redmine-rubylode-projects/security.yml?branch=main&label=security)](https://github.com/rubylode/redmine-rubylode-projects/actions/workflows/security.yml)
+[![version](https://img.shields.io/github/v/tag/rubylode/redmine-rubylode-projects?sort=semver&label=version)](https://github.com/rubylode/redmine-rubylode-projects/tags)
+[![license](https://img.shields.io/github/license/rubylode/redmine-rubylode-projects)](https://github.com/rubylode/redmine-rubylode-projects/blob/main/LICENSE)
+![Redmine](https://img.shields.io/badge/Redmine-6.0%20%7C%206.1%20%7C%207.0-b22222)
+![Ruby](https://img.shields.io/badge/Ruby-3.3%20%7C%203.4%20%7C%204.0-cc342d)
+
 TL;DR: a project Overview page with counts, a weekly chart and a list of urgent issues, plus a summary, extra columns and
 paging for the projects list in [Redmine](https://www.redmine.org).
 
