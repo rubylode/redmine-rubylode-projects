@@ -35,7 +35,7 @@ class SavedQueryColumnsTest < Redmine::IntegrationTest
   end
 
   def configure(**values)
-    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::PluginSettings::DEFAULTS.merge(values.stringify_keys)
+    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::Settings::DEFAULTS.merge(values.stringify_keys)
   end
 
   def headings = css_select("table.projects thead th").map { |heading| heading.text.strip }
@@ -64,8 +64,8 @@ class SavedQueryColumnsTest < Redmine::IntegrationTest
   end
 
   test "the setting for saved queries is off on a fresh install" do
-    refute RubylodeProjects::PluginSettings.new({}).add_columns_to_saved_queries?
-    assert_equal "0", RubylodeProjects::PluginSettings::DEFAULTS.fetch(SAVED_KEY)
+    refute RubylodeProjects::Settings.new({}).add_columns_to_saved_queries?
+    assert_equal "0", RubylodeProjects::Settings::DEFAULTS.fetch(SAVED_KEY)
   end
 
   test "a saved query without the plugin's columns is left as saved while the setting is off" do

@@ -30,7 +30,7 @@ module RubylodeProjects
 
     attr_reader :user, :week_count
 
-    def initialize(user: User.current, week_count: PluginSettings::DEFAULTS["trend_weeks"].to_i, with_subprojects: Setting.display_subprojects_issues?, today: nil)
+    def initialize(user: User.current, week_count: Settings::DEFAULTS["trend_weeks"].to_i, with_subprojects: Setting.display_subprojects_issues?, today: nil)
       @user = user
       @week_count = week_count
       @with_subprojects = with_subprojects

@@ -12,9 +12,9 @@
       show_done_bar    true or false, default the plugin setting
       user             whose view of the projects and issues it is, default User.current
     Nothing is rendered when the user may see no project. %>
-<% settings = RubylodeProjects::PluginSettings.new %>
+<% settings = RubylodeProjects::Settings.new %>
 <% table = RubylodeProjects::ProjectsTable.new(user: local_assigns.fetch(:user, User.current),
-                                               limit: local_assigns.fetch(:limit, settings.table_limit),
+                                               limit: local_assigns.fetch(:limit, settings.maximum_rows),
                                                include_subprojects: local_assigns.fetch(:subprojects, true),
                                                issues_path: ->(project) { project_issues_path(project) }) %>
 <% rows = table.rows %>

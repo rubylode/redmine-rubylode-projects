@@ -50,7 +50,7 @@ class ProjectsSummaryTest < Redmine::IntegrationTest
   end
 
   def configure(**values)
-    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::PluginSettings::DEFAULTS.merge(values.stringify_keys)
+    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::Settings::DEFAULTS.merge(values.stringify_keys)
   end
 
   # Only the projects made here, whatever else the fixtures hold.

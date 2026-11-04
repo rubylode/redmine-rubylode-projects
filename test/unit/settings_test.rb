@@ -16,8 +16,8 @@
 
 require_relative "../test_helper"
 
-class RubylodeProjectsPluginSettingsTest < ActiveSupport::TestCase
-  def settings(values) = RubylodeProjects::PluginSettings.new(values)
+class RubylodeProjectsSettingsTest < ActiveSupport::TestCase
+  def settings(values) = RubylodeProjects::Settings.new(values)
 
   test "an empty hash gives the defaults" do
     defaults = settings({})
@@ -72,7 +72,7 @@ class RubylodeProjectsPluginSettingsTest < ActiveSupport::TestCase
 
   test "settings are read from the saved plugin setting when nothing is passed in" do
     with_plugin_settings("default_display" => "board", "trend_weeks" => "6") do
-      saved = RubylodeProjects::PluginSettings.new
+      saved = RubylodeProjects::Settings.new
       assert_equal "board", saved.default_display
       assert_equal 6, saved.trend_weeks
     end
@@ -80,9 +80,9 @@ class RubylodeProjectsPluginSettingsTest < ActiveSupport::TestCase
 
   test "the projects table settings default to changing nothing" do
     defaults = settings({})
-    refute defaults.welcome_table_shown?
-    assert_equal "right", defaults.welcome_table_column
-    assert_equal 20, defaults.table_limit
+    refute defaults.show_on_welcome_page?
+    assert_equal "right", defaults.welcome_page_column
+    assert_equal 20, defaults.maximum_rows
     assert defaults.table_description_shown?
     assert defaults.table_done_bar_shown?
     assert defaults.valid?
@@ -90,32 +90,32 @@ class RubylodeProjectsPluginSettingsTest < ActiveSupport::TestCase
 
   test "settings saved by an older version read as the table defaults" do
     older = settings("default_display" => "board", "trend_weeks" => "8")
-    refute older.welcome_table_shown?
-    assert_equal 20, older.table_limit
+    refute older.show_on_welcome_page?
+    assert_equal 20, older.maximum_rows
     assert older.table_description_shown?
   end
 
   test "the table switches read their 0 and 1" do
-    chosen = settings("welcome_projects_table" => "1", "projects_table_show_description" => "0", "projects_table_show_done_bar" => "0")
-    assert chosen.welcome_table_shown?
+    chosen = settings("show_on_welcome_page" => "1", "projects_table_show_description" => "0", "projects_table_show_done_bar" => "0")
+    assert chosen.show_on_welcome_page?
     refute chosen.table_description_shown?
     refute chosen.table_done_bar_shown?
   end
 
   test "the welcome column is left or right" do
-    assert settings("welcome_projects_table_column" => "left").valid?
-    assert_equal "left", settings("welcome_projects_table_column" => "left").welcome_table_column
-    refute settings("welcome_projects_table_column" => "middle").valid?
-    assert_equal "right", settings("welcome_projects_table_column" => "middle").welcome_table_column
+    assert settings("welcome_page_column" => "left").valid?
+    assert_equal "left", settings("welcome_page_column" => "left").welcome_page_column
+    refute settings("welcome_page_column" => "middle").valid?
+    assert_equal "right", settings("welcome_page_column" => "middle").welcome_page_column
   end
 
   test "the table rows are 1 to 100, whole numbers, and read clamped" do
-    [1, 20, "100", " 5"].each { |limit| assert settings("projects_table_limit" => limit).valid?, limit.inspect }
-    [0, 101, -1, "", "abc", "2.5", nil].each { |limit| refute settings("projects_table_limit" => limit).valid?, limit.inspect }
-    assert_match(/from 1 to 100/, settings("projects_table_limit" => 500).errors.first)
-    assert_equal 100, settings("projects_table_limit" => "500").table_limit
-    assert_equal 1, settings("projects_table_limit" => "0").table_limit
-    assert_equal 20, settings("projects_table_limit" => "abc").table_limit
+    [1, 20, "100", " 5"].each { |limit| assert settings("maximum_rows" => limit).valid?, limit.inspect }
+    [0, 101, -1, "", "abc", "2.5", nil].each { |limit| refute settings("maximum_rows" => limit).valid?, limit.inspect }
+    assert_match(/from 1 to 100/, settings("maximum_rows" => 500).errors.first)
+    assert_equal 100, settings("maximum_rows" => "500").maximum_rows
+    assert_equal 1, settings("maximum_rows" => "0").maximum_rows
+    assert_equal 20, settings("maximum_rows" => "abc").maximum_rows
   end
 
   def with_plugin_settings(values)

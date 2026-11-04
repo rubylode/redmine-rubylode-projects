@@ -39,8 +39,8 @@ module RubylodeProjects
     # The welcome page block, when the setting is on and this is the column the setting names. The partial adds the
     # stylesheet itself, so the table also works from the macro and from other plugins.
     def welcome_table(context, column)
-      settings = PluginSettings.new
-      return unless settings.welcome_table_shown? && settings.welcome_table_column == column
+      settings = Settings.new
+      return unless settings.show_on_welcome_page? && settings.welcome_page_column == column
 
       context[:hook_caller].render(partial: "rubylode_projects/projects_table")
     end

@@ -57,7 +57,7 @@ module RubylodeProjects
     def apply_default_display
       return if api_request?
 
-      rule = RubylodeProjects::DisplayRule.new(settings: RubylodeProjects::PluginSettings.new)
+      rule = RubylodeProjects::DisplayRule.new(settings: RubylodeProjects::Settings.new)
       display = rule.display_for(requested: requested_display_type, saved_query: @query.persisted?,
                                  remembered: session[REMEMBERED_DISPLAY_KEY])
       @query.display_type = display if display
@@ -71,7 +71,7 @@ module RubylodeProjects
       return if RubylodeProjects::Coexistence.other_summary_present?
       return if params[:c].present? || nested_query_params[:column_names].present?
 
-      settings = RubylodeProjects::PluginSettings.new
+      settings = RubylodeProjects::Settings.new
       return if @query.persisted? && !saved_query_gets_added_columns?(settings)
 
       added = RubylodeProjects::ProjectColumns.query_column_names(settings.added_columns)

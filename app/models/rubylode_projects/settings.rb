@@ -18,12 +18,12 @@ module RubylodeProjects
   # The plugin's settings (Administration, Plugins, Configure), read with their defaults and checked before they are saved.
   # Redmine keeps them as one hash under Setting.plugin_redmine_rubylode_projects; anything missing or unusable falls back
   # to the default, so a half-filled hash from an older version never breaks the page.
-  class PluginSettings
+  class Settings
     DISPLAY_CHOICES = %w[list board redmine].freeze
     COLUMN_CHOICES = %w[open_issues overdue closed_week percent_done trend last_activity].freeze
     TREND_WEEKS_RANGE = (4..26)
-    WELCOME_COLUMN_CHOICES = %w[left right].freeze
-    TABLE_LIMIT_RANGE = ProjectsTable::LIMIT_RANGE
+    WELCOME_PAGE_COLUMN_CHOICES = %w[left right].freeze
+    MAXIMUM_ROWS_RANGE = ProjectsTable::LIMIT_RANGE
     PLUGIN_ID = :redmine_rubylode_projects
 
     DEFAULTS = {
@@ -32,9 +32,9 @@ module RubylodeProjects
       "added_columns" => %w[open_issues overdue percent_done trend],
       "add_columns_to_saved_queries" => "0",
       "trend_weeks" => "12",
-      "welcome_projects_table" => "0",
-      "welcome_projects_table_column" => "right",
-      "projects_table_limit" => "20",
+      "show_on_welcome_page" => "0",
+      "welcome_page_column" => "right",
+      "maximum_rows" => "20",
       "projects_table_show_description" => "1",
       "projects_table_show_done_bar" => "1"
     }.freeze
@@ -57,11 +57,11 @@ module RubylodeProjects
       unless valid_trend_weeks?(@values.fetch("trend_weeks", DEFAULTS["trend_weeks"]))
         messages << I18n.t(:rubylode_projects_error_trend_weeks, first: TREND_WEEKS_RANGE.first, last: TREND_WEEKS_RANGE.last)
       end
-      unless WELCOME_COLUMN_CHOICES.include?(@values.fetch("welcome_projects_table_column", DEFAULTS["welcome_projects_table_column"]))
+      unless WELCOME_PAGE_COLUMN_CHOICES.include?(@values.fetch("welcome_page_column", DEFAULTS["welcome_page_column"]))
         messages << I18n.t(:rubylode_projects_error_welcome_column)
       end
-      unless valid_table_limit?(@values.fetch("projects_table_limit", DEFAULTS["projects_table_limit"]))
-        messages << I18n.t(:rubylode_projects_error_table_limit, first: TABLE_LIMIT_RANGE.first, last: TABLE_LIMIT_RANGE.last)
+      unless valid_maximum_rows?(@values.fetch("maximum_rows", DEFAULTS["maximum_rows"]))
+        messages << I18n.t(:rubylode_projects_error_table_limit, first: MAXIMUM_ROWS_RANGE.first, last: MAXIMUM_ROWS_RANGE.last)
       end
       unknown = submitted_columns - COLUMN_CHOICES
       messages << I18n.t(:rubylode_projects_error_columns, names: unknown.join(", ")) if unknown.any?
@@ -95,18 +95,18 @@ module RubylodeProjects
       valid_trend_weeks?(@values["trend_weeks"]) ? Integer(@values["trend_weeks"].to_s, 10) : Integer(DEFAULTS["trend_weeks"])
     end
 
-    def welcome_table_shown? = switched_on?("welcome_projects_table")
+    def show_on_welcome_page? = switched_on?("show_on_welcome_page")
 
-    def welcome_table_column
-      choice = @values["welcome_projects_table_column"]
-      WELCOME_COLUMN_CHOICES.include?(choice) ? choice : DEFAULTS["welcome_projects_table_column"]
+    def welcome_page_column
+      choice = @values["welcome_page_column"]
+      WELCOME_PAGE_COLUMN_CHOICES.include?(choice) ? choice : DEFAULTS["welcome_page_column"]
     end
 
     # An unusable value reads as the default; a whole number outside the range is held to it.
-    def table_limit
-      Integer(@values["projects_table_limit"].to_s, 10).clamp(TABLE_LIMIT_RANGE)
+    def maximum_rows
+      Integer(@values["maximum_rows"].to_s, 10).clamp(MAXIMUM_ROWS_RANGE)
     rescue ArgumentError, TypeError
-      Integer(DEFAULTS["projects_table_limit"])
+      Integer(DEFAULTS["maximum_rows"])
     end
 
     # Off unless switched on: a saved query keeps the columns it was saved with.
@@ -124,8 +124,8 @@ module RubylodeProjects
       !%w[0 false].include?(@values[key].to_s)
     end
 
-    def valid_table_limit?(value)
-      TABLE_LIMIT_RANGE.cover?(Integer(value.to_s, 10))
+    def valid_maximum_rows?(value)
+      MAXIMUM_ROWS_RANGE.cover?(Integer(value.to_s, 10))
     rescue ArgumentError, TypeError
       false
     end

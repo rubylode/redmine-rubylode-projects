@@ -18,7 +18,7 @@ require_relative "../test_helper"
 
 class RubylodeProjectsDisplayRuleTest < ActiveSupport::TestCase
   def rule(default_display = "list")
-    RubylodeProjects::DisplayRule.new(settings: RubylodeProjects::PluginSettings.new("default_display" => default_display))
+    RubylodeProjects::DisplayRule.new(settings: RubylodeProjects::Settings.new("default_display" => default_display))
   end
 
   def display_for(rule, requested: nil, saved_query: false, remembered: nil)

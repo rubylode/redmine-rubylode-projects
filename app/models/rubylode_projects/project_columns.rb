@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 
 module RubylodeProjects
-  # The columns the plugin adds to the project list. The names a settings checkbox uses (see PluginSettings::COLUMN_CHOICES)
+  # The columns the plugin adds to the project list. The names a settings checkbox uses (see Settings::COLUMN_CHOICES)
   # map to the column names on ProjectQuery. "Last activity" is Redmine's own column, so it is not added a second time.
   module ProjectColumns
     COLUMN_NAMES = {

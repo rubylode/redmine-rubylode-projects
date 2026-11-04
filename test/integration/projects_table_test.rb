@@ -39,7 +39,7 @@ class ProjectsTableTest < Redmine::IntegrationTest
   end
 
   def configure(**values)
-    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::PluginSettings::DEFAULTS.merge(values.stringify_keys)
+    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::Settings::DEFAULTS.merge(values.stringify_keys)
   end
 
   def issue(project, **attributes)
@@ -49,7 +49,7 @@ class ProjectsTableTest < Redmine::IntegrationTest
   def row(project) = "tr[data-project-id='#{project.id}']"
 
   def welcome_with_table
-    configure(welcome_projects_table: "1")
+    configure(show_on_welcome_page: "1")
     get "/"
     assert_response :success
   end
@@ -75,7 +75,7 @@ class ProjectsTableTest < Redmine::IntegrationTest
     welcome_with_table
     assert_select ".splitcontentright [data-rubylode-projects=table]", 1
     assert_select ".splitcontentleft [data-rubylode-projects=table]", 0
-    configure(welcome_projects_table: "1", welcome_projects_table_column: "left")
+    configure(show_on_welcome_page: "1", welcome_page_column: "left")
     get "/"
     assert_select ".splitcontentleft [data-rubylode-projects=table]", 1
     assert_select ".splitcontentright [data-rubylode-projects=table]", 0
@@ -156,7 +156,7 @@ class ProjectsTableTest < Redmine::IntegrationTest
   end
 
   test "the description and done bar can be switched off" do
-    configure(welcome_projects_table: "1", projects_table_show_description: "0", projects_table_show_done_bar: "0")
+    configure(show_on_welcome_page: "1", projects_table_show_description: "0", projects_table_show_done_bar: "0")
     get "/"
     assert_select "td.rubylode-projects-table-description", 0
     assert_select ".rubylode-projects-table-bar", 0
@@ -172,14 +172,14 @@ class ProjectsTableTest < Redmine::IntegrationTest
   end
 
   test "the rows are limited by the setting" do
-    configure(welcome_projects_table: "1", projects_table_limit: "2")
+    configure(show_on_welcome_page: "1", maximum_rows: "2")
     get "/"
     assert_select "[data-rubylode-projects=table] tbody tr", 2
   end
 
   test "the query count stays the same for 3 and 30 projects" do
     log_user("admin", "admin")
-    configure(welcome_projects_table: "1", projects_table_limit: "100")
+    configure(show_on_welcome_page: "1", maximum_rows: "100")
     Project.where("name LIKE 'Table%'").delete_all
     run = lambda do |total|
       created = Array.new(total) { |index| Project.generate!(name: "Counted #{total}-#{index}", is_public: true, tracker_ids: [1]) }
@@ -202,7 +202,7 @@ class ProjectsTableTest < Redmine::IntegrationTest
   end
 
   test "the projects page does not get the table" do
-    configure(welcome_projects_table: "1")
+    configure(show_on_welcome_page: "1")
     get "/projects"
     assert_response :success
     assert_select "[data-rubylode-projects=table]", 0

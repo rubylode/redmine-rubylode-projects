@@ -27,7 +27,7 @@ Redmine::Plugin.register :redmine_rubylode_projects do
   description "A project Overview with counts, a weekly chart and what is urgent, and pages for the board view of the projects list"
   version "1.3.1"
   requires_redmine version_or_higher: "6.0.0"
-  settings default: RubylodeProjects::PluginSettings::DEFAULTS, partial: "settings/rubylode_projects_settings"
+  settings default: RubylodeProjects::Settings::DEFAULTS, partial: "settings/rubylode_projects_settings"
 end
 
 # Redmine runs this file again on every code reload, so the patch goes in only once.

@@ -57,7 +57,7 @@ class ProjectColumnsTest < Redmine::IntegrationTest
   end
 
   def configure(**values)
-    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::PluginSettings::DEFAULTS.merge(values.stringify_keys)
+    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::Settings::DEFAULTS.merge(values.stringify_keys)
   end
 
   def cells(project, column) = css_select("tr#project-#{project.id} td.#{column}").first
@@ -194,7 +194,7 @@ class ProjectColumnsTest < Redmine::IntegrationTest
   end
 
   test "Last activity is Redmine's own column, offered by the settings and not added a second time" do
-    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::PluginSettings::DEFAULTS.merge("added_columns" => %w[open_issues last_activity])
+    Setting.plugin_redmine_rubylode_projects = RubylodeProjects::Settings::DEFAULTS.merge("added_columns" => %w[open_issues last_activity])
     list
     headings = css_select("table.projects thead th").map { |heading| heading.text.strip }
     assert_equal ["Name", "Identifier", "Description", "Open issues", "Last activity"], headings

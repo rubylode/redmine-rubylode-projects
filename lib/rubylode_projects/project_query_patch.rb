@@ -37,7 +37,7 @@ module RubylodeProjects
     # One set of figures per query, shared by the columns and the summary, and sized by the trend setting.
     def rubylode_metrics
       @rubylode_metrics ||= RubylodeProjects::PortfolioMetrics.new(user: User.current,
-                                                                   week_count: RubylodeProjects::PluginSettings.new.trend_weeks)
+                                                                   week_count: RubylodeProjects::Settings.new.trend_weeks)
     end
   end
 end

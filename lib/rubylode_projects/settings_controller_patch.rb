@@ -19,10 +19,10 @@ module RubylodeProjects
   # ours first: a bad value shows the form again with the problems and the typed values, and nothing is saved.
   module SettingsControllerPatch
     def plugin
-      return super unless request.post? && params[:id].to_s == RubylodeProjects::PluginSettings::PLUGIN_ID.to_s
+      return super unless request.post? && params[:id].to_s == RubylodeProjects::Settings::PLUGIN_ID.to_s
 
       submitted = params[:settings] ? params[:settings].permit!.to_h : {}
-      errors = RubylodeProjects::PluginSettings.errors_for(submitted)
+      errors = RubylodeProjects::Settings.errors_for(submitted)
       return super if errors.empty?
 
       @plugin = Redmine::Plugin.find(params[:id])

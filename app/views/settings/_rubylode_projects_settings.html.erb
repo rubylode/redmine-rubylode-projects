@@ -1,9 +1,9 @@
 <%# Rubylode Projects: Administration, Plugins, Configure. The values are checked in RubylodeProjects::SettingsControllerPatch before they are saved. %>
-<% current = RubylodeProjects::PluginSettings.new(settings) %>
+<% current = RubylodeProjects::Settings.new(settings) %>
 <p>
   <label for="settings_default_display"><%= l(:rubylode_projects_setting_default_display) %></label>
   <%= select_tag "settings[default_display]",
-                 options_for_select(RubylodeProjects::PluginSettings::DISPLAY_CHOICES.map { |choice| [l(:"rubylode_projects_display_#{choice}"), choice] }, current.default_display),
+                 options_for_select(RubylodeProjects::Settings::DISPLAY_CHOICES.map { |choice| [l(:"rubylode_projects_display_#{choice}"), choice] }, current.default_display),
                  id: "settings_default_display" %>
   <em class="info"><%= l(:rubylode_projects_setting_default_display_help) %></em>
 </p>
@@ -15,7 +15,7 @@
 <p>
   <label><%= l(:rubylode_projects_setting_added_columns) %></label>
   <%= hidden_field_tag "settings[added_columns][]", "", id: nil %>
-  <% RubylodeProjects::PluginSettings::COLUMN_CHOICES.each do |column| %>
+  <% RubylodeProjects::Settings::COLUMN_CHOICES.each do |column| %>
     <label class="block">
       <%= check_box_tag "settings[added_columns][]", column, current.added_columns.include?(column), id: "settings_added_columns_#{column}" %>
       <%= l(:"rubylode_projects_column_#{column}") %>
@@ -32,25 +32,25 @@
 <p>
   <label for="settings_trend_weeks"><%= l(:rubylode_projects_setting_trend_weeks) %></label>
   <%= number_field_tag "settings[trend_weeks]", settings.to_h.stringify_keys.fetch("trend_weeks", current.trend_weeks), id: "settings_trend_weeks",
-                       min: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.first, max: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.last %>
-  <em class="info"><%= l(:rubylode_projects_setting_trend_weeks_help, first: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.first, last: RubylodeProjects::PluginSettings::TREND_WEEKS_RANGE.last) %></em>
+                       min: RubylodeProjects::Settings::TREND_WEEKS_RANGE.first, max: RubylodeProjects::Settings::TREND_WEEKS_RANGE.last %>
+  <em class="info"><%= l(:rubylode_projects_setting_trend_weeks_help, first: RubylodeProjects::Settings::TREND_WEEKS_RANGE.first, last: RubylodeProjects::Settings::TREND_WEEKS_RANGE.last) %></em>
 </p>
 <p>
-  <label for="settings_welcome_projects_table"><%= l(:rubylode_projects_setting_welcome_table) %></label>
-  <%= hidden_field_tag "settings[welcome_projects_table]", "0", id: nil %>
-  <%= check_box_tag "settings[welcome_projects_table]", "1", current.welcome_table_shown?, id: "settings_welcome_projects_table" %>
+  <label for="settings_show_on_welcome_page"><%= l(:rubylode_projects_setting_welcome_table) %></label>
+  <%= hidden_field_tag "settings[show_on_welcome_page]", "0", id: nil %>
+  <%= check_box_tag "settings[show_on_welcome_page]", "1", current.show_on_welcome_page?, id: "settings_show_on_welcome_page" %>
 </p>
 <p>
-  <label for="settings_welcome_projects_table_column"><%= l(:rubylode_projects_setting_welcome_table_column) %></label>
-  <%= select_tag "settings[welcome_projects_table_column]",
-                 options_for_select(RubylodeProjects::PluginSettings::WELCOME_COLUMN_CHOICES.map { |choice| [l(:"rubylode_projects_welcome_column_#{choice}"), choice] }, current.welcome_table_column),
-                 id: "settings_welcome_projects_table_column" %>
+  <label for="settings_welcome_page_column"><%= l(:rubylode_projects_setting_welcome_table_column) %></label>
+  <%= select_tag "settings[welcome_page_column]",
+                 options_for_select(RubylodeProjects::Settings::WELCOME_PAGE_COLUMN_CHOICES.map { |choice| [l(:"rubylode_projects_welcome_column_#{choice}"), choice] }, current.welcome_page_column),
+                 id: "settings_welcome_page_column" %>
 </p>
 <p>
-  <label for="settings_projects_table_limit"><%= l(:rubylode_projects_setting_table_limit) %></label>
-  <%= number_field_tag "settings[projects_table_limit]", settings.to_h.stringify_keys.fetch("projects_table_limit", current.table_limit), id: "settings_projects_table_limit",
-                       min: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.first, max: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.last %>
-  <em class="info"><%= l(:rubylode_projects_setting_table_limit_help, first: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.first, last: RubylodeProjects::PluginSettings::TABLE_LIMIT_RANGE.last) %></em>
+  <label for="settings_maximum_rows"><%= l(:rubylode_projects_setting_table_limit) %></label>
+  <%= number_field_tag "settings[maximum_rows]", settings.to_h.stringify_keys.fetch("maximum_rows", current.maximum_rows), id: "settings_maximum_rows",
+                       min: RubylodeProjects::Settings::MAXIMUM_ROWS_RANGE.first, max: RubylodeProjects::Settings::MAXIMUM_ROWS_RANGE.last %>
+  <em class="info"><%= l(:rubylode_projects_setting_table_limit_help, first: RubylodeProjects::Settings::MAXIMUM_ROWS_RANGE.first, last: RubylodeProjects::Settings::MAXIMUM_ROWS_RANGE.last) %></em>
 </p>
 <p>
   <label for="settings_projects_table_show_description"><%= l(:rubylode_projects_setting_table_show_description) %></label>

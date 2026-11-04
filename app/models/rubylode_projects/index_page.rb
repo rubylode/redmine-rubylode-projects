@@ -20,7 +20,7 @@ module RubylodeProjects
   # The summary shows on the HTML list of the Projects page when the setting is on, the address does not say ?summary=0,
   # and no other plugin supplies a summary of its own. The columns do not depend on any of this.
   class IndexPage
-    def initialize(query:, params:, settings: PluginSettings.new, other_summary_present: Coexistence.other_summary_present?)
+    def initialize(query:, params:, settings: Settings.new, other_summary_present: Coexistence.other_summary_present?)
       @query = query
       @params = params
       @settings = settings
