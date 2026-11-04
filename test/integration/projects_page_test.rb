@@ -36,7 +36,7 @@ class ProjectsPageTest < Redmine::IntegrationTest
   test "the plugin is registered with its name and version" do
     plugin = Redmine::Plugin.find(:redmine_rubylode_projects)
     assert_equal "Rubylode Projects", plugin.name
-    assert_equal "1.3.1", plugin.version
+    assert_equal "2.0.0", plugin.version
   end
 
   test "the board view shows a page of whole trees and Redmine's page links" do
@@ -97,7 +97,7 @@ class ProjectsPageTest < Redmine::IntegrationTest
   test "the plugin shows its project address and author on the Plugins page" do
     plugin = Redmine::Plugin.find(:redmine_rubylode_projects)
     readme = File.read(File.expand_path("../../README.md", __dir__))
-    repository_name = readme[%r{git clone https://github\.com/rubylode/([\w-]+)\.git}, 1]
+    repository_name = readme[%r{github\.com/rubylode/([\w-]+)/actions/workflows/tests\.yml}, 1]
     assert_equal "redmine-rubylode-projects", repository_name
     assert_equal "https://github.com/rubylode/#{repository_name}", plugin.url
     assert_equal "Rubylode", plugin.author
