@@ -63,9 +63,9 @@ module RubylodeProjects
       @query.display_type = display if display
     end
 
-    # The columns ticked in the plugin settings go after Redmine's default columns, but only when the list names no columns
+    # The columns checked in the plugin settings go after Redmine's default columns, but only when the list names no columns
     # of its own: a visit that picked its columns keeps exactly those. A saved query keeps its columns too, unless the
-    # "add to saved queries" setting is on and the query holds none of the plugin's columns; then the ticked ones are added
+    # "add to saved queries" setting is on and the query holds none of the plugin's columns; then the checked ones are added
     # for this page only, and the query is not written.
     def apply_added_columns
       return if RubylodeProjects::Coexistence.other_summary_present?

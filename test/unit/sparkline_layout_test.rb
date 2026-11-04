@@ -37,7 +37,7 @@ class RubylodeProjectsSparklineLayoutTest < ActiveSupport::TestCase
     assert_equal [23.0], layout([0, 0, 0]).points.map(&:y).uniq
   end
 
-  test "one value is centred and no values is empty" do
+  test "one value is centered and no values is empty" do
     assert_in_delta 48.0, layout([5]).points.first.x, 0.001
     assert_empty layout([]).points
     assert_equal "", layout([]).area_path

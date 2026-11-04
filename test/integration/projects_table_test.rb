@@ -247,7 +247,7 @@ class ProjectsTableTest < Redmine::IntegrationTest
 
   test "the macro refuses an unknown argument or a bad limit and escapes the title" do
     page = WikiPage.find(1)
-    page.content.update!(text: "{{projects_table(colour=red)}}")
+    page.content.update!(text: "{{projects_table(color=red)}}")
     get "/projects/#{page.project.identifier}/wiki/#{page.title}"
     assert_select "table.rubylode-projects-table", 0
     assert_match(/takes title, limit and subprojects/, response.body)

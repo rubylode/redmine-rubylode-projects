@@ -31,6 +31,14 @@ class RubylodeProjectsLocaleStructureTest < ActiveSupport::TestCase
     end
   end
 
+  test "no string holds an en dash, an em dash or an arrow" do
+    strings = []
+    collect = ->(node) { node.is_a?(Hash) ? node.each_value(&collect) : strings << node.to_s }
+    collect.call(ENGLISH)
+    assert strings.any?
+    strings.each { |string| refute_match(/[–—→]/, string) }
+  end
+
   test "the welcome page placement is worded as the standard words it" do
     assert_equal "Welcome page", I18n.t("rubylode_projects.settings.show_on_welcome_page.label")
     assert_equal "Column", I18n.t("rubylode_projects.settings.welcome_page_column.label")

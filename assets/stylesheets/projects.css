@@ -1,10 +1,10 @@
 /* Rubylode Projects: the Overview cards and the board pages.
-   Every colour and size is a --rubylode-projects-* custom property. The defaults below sit in :where(:root), which has no
+   Every color and size is a --rubylode-projects-* custom property. The defaults below sit in :where(:root), which has no
    specificity, so a theme wins whenever it sets one, on :root or on any element, whatever order the stylesheets load in.
    The README lists them under "Theming". */
 
 :where(:root) {
-  /* Colours */
+  /* Colors */
   --rubylode-projects-page-background: #f2f4f7;
   --rubylode-projects-card-background: #ffffff;
   --rubylode-projects-card-border-color: #e1e5eb;
@@ -26,7 +26,7 @@
   --rubylode-projects-priority-background: #fdecea;
   --rubylode-projects-priority-text-color: #a1281c;
 
-  /* Tooltips and popovers: they take the card colours, so a dark theme that restyles the cards restyles them too */
+  /* Tooltips and popovers: they take the card colors, so a dark theme that restyles the cards restyles them too */
   --rubylode-projects-tooltip-background: var(--rubylode-projects-card-background);
   --rubylode-projects-tooltip-text-color: var(--rubylode-projects-text-color);
   --rubylode-projects-tooltip-border-color: var(--rubylode-projects-card-border-color);

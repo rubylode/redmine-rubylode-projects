@@ -248,7 +248,7 @@ class OverviewInteractivityTest < Redmine::IntegrationTest
     assert_select "script[src*=?][defer]", "plugin_assets/redmine_rubylode_projects/overview"
   end
 
-  test "the colour and size choices for tooltips are custom properties in the stylesheet" do
+  test "the color and size choices for tooltips are custom properties in the stylesheet" do
     css = File.read(File.expand_path("../../assets/stylesheets/projects.css", __dir__))
     %w[background text-color border-color shadow].each { |name| assert_includes css, "--rubylode-projects-tooltip-#{name}:" }
     %w[highlight-color dim-opacity].each { |name| assert_includes css, "--rubylode-projects-#{name}:" }

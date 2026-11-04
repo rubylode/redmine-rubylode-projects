@@ -63,7 +63,7 @@ class RubylodeProjectsWeeklyChartLayoutTest < ActiveSupport::TestCase
     assert layout.bars.all? { |bar| bar.x >= layout.plot_left && bar.x + bar.width <= layout.plot_right }
   end
 
-  test "one label per week, centred under its pair of bars, and one grid line per tick" do
+  test "one label per week, centered under its pair of bars, and one grid line per tick" do
     assert_equal %w[W42 W43 W44], layout.week_labels.map(&:text)
     first_pair = layout.bars.first(2)
     assert_in_delta (first_pair.first.x + first_pair.last.x + first_pair.last.width) / 2.0, layout.week_labels.first.x, 0.01

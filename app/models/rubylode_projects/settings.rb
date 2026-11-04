@@ -84,7 +84,7 @@ module RubylodeProjects
       !%w[0 false].include?(@values["show_summary"].to_s)
     end
 
-    # In the order of COLUMN_CHOICES, so the columns do not move about with the order the boxes were ticked.
+    # In the order of COLUMN_CHOICES, so the columns do not move about with the order the boxes were checked.
     def added_columns
       return DEFAULTS["added_columns"] unless @values.key?("added_columns")
 

@@ -16,7 +16,7 @@
 
 require_relative "../test_helper"
 
-# The ticked columns on a project list: on a fresh install, on a saved query, and when the list picks its own columns.
+# The checked columns on a project list: on a fresh install, on a saved query, and when the list picks its own columns.
 class SavedQueryColumnsTest < Redmine::IntegrationTest
   fixtures :projects, :users, :email_addresses, :roles, :members, :member_roles, :enabled_modules, :trackers,
            :projects_trackers, :issue_statuses, :enumerations, :workflows, :issues, :custom_fields, :custom_values,
@@ -74,7 +74,7 @@ class SavedQueryColumnsTest < Redmine::IntegrationTest
     assert_equal %w[Name Identifier Description], headings
   end
 
-  test "a saved query without the plugin's columns gets the ticked ones when the setting is on" do
+  test "a saved query without the plugin's columns gets the checked ones when the setting is on" do
     configure(SAVED_KEY => "1")
     query = saved_query(%w[name identifier status])
     get "/projects", params: { query_id: query.id }
@@ -88,7 +88,7 @@ class SavedQueryColumnsTest < Redmine::IntegrationTest
     assert_equal FRESH_HEADINGS, headings
   end
 
-  test "the added columns follow the ticked ones, not the whole set" do
+  test "the added columns follow the checked ones, not the whole set" do
     configure(SAVED_KEY => "1", "added_columns" => %w[trend])
     get "/projects", params: { query_id: saved_query(%w[name status]).id }
     assert_equal %w[Name Status Trend], headings
@@ -100,7 +100,7 @@ class SavedQueryColumnsTest < Redmine::IntegrationTest
     assert_equal %w[Name Trend], headings
   end
 
-  test "nothing is added to a saved query when no column is ticked" do
+  test "nothing is added to a saved query when no column is checked" do
     configure(SAVED_KEY => "1", "added_columns" => [""])
     get "/projects", params: { query_id: saved_query(%w[name status]).id }
     assert_equal %w[Name Status], headings

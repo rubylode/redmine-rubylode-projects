@@ -61,7 +61,7 @@ class RubylodeProjectsSettingsTest < ActiveSupport::TestCase
     assert_match(/secret_column/, bad.errors.first)
   end
 
-  test "no ticked column box means no added columns, not the defaults" do
+  test "no checked column box means no added columns, not the defaults" do
     assert_equal [], settings("added_columns" => [""]).added_columns
   end
 
