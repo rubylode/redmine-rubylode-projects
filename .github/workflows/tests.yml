@@ -70,7 +70,7 @@ jobs:
       - name: Build the zip
         run: git archive --format=zip --prefix=redmine_rubylode_projects/ -o redmine_rubylode_projects.zip HEAD
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: redmine_rubylode_projects
           path: redmine_rubylode_projects.zip
