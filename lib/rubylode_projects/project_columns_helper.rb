@@ -77,7 +77,7 @@ module RubylodeProjects
 
     # A thin bar and the share of issues that are closed, the same figure as the Overview's done tile.
     def rubylode_progress_cell(project, figures)
-      return content_tag(:span, "–", class: "rubylode-projects-count-none") if figures.total_count.zero?
+      return content_tag(:span, l("rubylode_projects.no_issues"), class: "rubylode-projects-count-none") if figures.total_count.zero?
 
       percentage = figures.done_percentage
       link_to(rubylode_project_link(project).status(:closed), class: "rubylode-projects-progress",

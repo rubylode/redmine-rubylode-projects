@@ -11,12 +11,13 @@ en:
       one: Across 1 subproject
       other: Across %{count} subprojects
     closed_of_total: "%{closed} of %{total} closed"
-    weekly_chart_title: Opened vs closed per week
+    weekly_chart_title: Opened and closed per week
     weekly_chart_description: Bar chart of the issues opened and closed in each of the last %{count} weeks
     weekly_chart_note_with_subprojects: This project's issues, subprojects included, by the week they were opened or closed.
     weekly_chart_note_project_only: This project's issues, by the week they were opened or closed.
     opened: Opened
     closed: Closed
+    no_issues: No issues
     week: Week
     week_of: Week of %{date}
     bar_title_opened: 'Week of %{date}: %{count} opened'
@@ -25,7 +26,7 @@ en:
     open_and_closed_html: "%{open} open · %{closed} closed"
     done_of_total: "%{percentage}% done of %{total}"
     in_progress_and_urgent: In progress and urgent
-    all_open_by_priority: All open issues →
+    all_open_by_priority: All open issues
     nothing_urgent: Nothing is in progress or urgent.
     classic_overview: Classic overview
     card_overview: Back to the new overview
@@ -67,13 +68,13 @@ en:
         label: Show the summary and charts above the list
       added_columns:
         label: Columns added to the project list
-        hint: Added to Redmine's default columns when the list names none of its own. Every column can also be picked in the list options.
+        hint: These are added to Redmine's default columns when the list names none of its own. Every column can also be picked in the list options.
       add_columns_to_saved_queries:
-        label: Also add them to saved queries
-        hint: Shows the ticked columns on a saved project query that holds none of this plugin's columns. The query itself is not changed, so turning this off brings back what was saved.
+        label: Also add the checked columns to saved queries
+        hint: Saved project queries that hold none of this plugin's columns show the checked ones. The query itself is not changed, so turning this off brings back what was saved.
       trend_weeks:
         label: Weeks in the trend
-        hint: From %{first} to %{last}. The portfolio chart and the sparklines cover this many weeks.
+        hint: The summary chart and the Trend column cover this many weeks, from %{first} to %{last}.
       show_on_welcome_page:
         label: Welcome page
         hint: Adds the projects table to Redmine's home page, after the welcome text or the news.
@@ -112,7 +113,7 @@ en:
       overdue: Overdue
       due_soon: Due in 7 days
       unassigned: Unassigned
-      quiet: Quiet 30+ days
+      quiet: No activity in 30 days
     tile_notes:
       projects: in this list
       open: of %{total} issues
@@ -120,7 +121,7 @@ en:
       overdue: past their due date
       due_soon: open, due today or within 7 days
       unassigned: open, with no assignee
-      quiet: projects with no activity
+      quiet: projects, including any that never had activity
     portfolio_chart_note: The issues of the projects in this list, by the week they were opened or closed.
     link_not_limited_note: The list has more than %{count} projects, so the links list the issues of every project you can see, not only these.
     where_the_work_is: Where the work is
@@ -131,6 +132,6 @@ en:
     table_open_link: "%{project}: %{count} open issues"
     table_closed_link: "%{project}: %{count} closed issues"
     macro_errors:
-      unknown_argument: projects_table takes title, limit and subprojects, not "%{name}"
-      bad_limit: limit must be a whole number from %{first} to %{last}
-      bad_subprojects: subprojects must be true or false
+      unknown_argument: projects_table takes title, limit and subprojects, not "%{name}".
+      bad_limit: limit must be a whole number from %{first} to %{last}.
+      bad_subprojects: subprojects must be true or false.

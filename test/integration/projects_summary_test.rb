@@ -99,7 +99,7 @@ class ProjectsSummaryTest < Redmine::IntegrationTest
     assert_equal TILE_KEYS, css_select("[data-rubylode-tile]").map { |tile| tile["data-rubylode-tile"] }
     assert_select ".rubylode-overview-chart[data-rubylode-chart] svg.rubylode-overview-chart-graphic"
     assert_select "[data-rubylode-bars] li[data-rubylode-bar]"
-    assert_select "h3", text: "Opened vs closed per week"
+    assert_select "h3", text: "Opened and closed per week"
     assert_select "h3", text: "Where the work is"
   end
 

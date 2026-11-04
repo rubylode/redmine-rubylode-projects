@@ -125,7 +125,7 @@ class ProjectColumnsTest < Redmine::IntegrationTest
   test "a project without issues shows a dash instead of a bar" do
     empty = Project.generate!(name: "Columns empty", is_public: true, tracker_ids: [1])
     list
-    assert_equal "–", cells(empty, "rubylode_percent_done").text.strip
+    assert_equal "No issues", cells(empty, "rubylode_percent_done").text.strip
     assert_equal "0", cells(empty, "rubylode_open_issues").text.strip
   end
 
