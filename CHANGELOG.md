@@ -2,6 +2,49 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.0] - Unreleased
+
+The plugin follows the Rubylode plugin standard: one settings class, one locale root and the standard names for the welcome
+page settings. Three saved settings keys change names; a migration moves their values.
+
+### Changed
+
+- Settings key `welcome_projects_table` is now `show_on_welcome_page`. Its label is "Welcome page", under the heading
+  "Show the block on".
+- Settings key `welcome_projects_table_column` is now `welcome_page_column`. Its label is "Column", a visible select with
+  Left and Right next to the Welcome page box.
+- Settings key `projects_table_limit` is now `maximum_rows`. Its label is "Maximum rows".
+- `RubylodeProjects::PluginSettings` is now `RubylodeProjects::Settings`, the single reader of the settings. Code in another
+  plugin or a theme that calls it must use the new name. Its methods `welcome_table_shown?`, `welcome_table_column` and
+  `table_limit` are now `show_on_welcome_page?`, `welcome_page_column` and `maximum_rows`.
+- The strings moved from flat `rubylode_projects_*` keys to one root, `rubylode_projects`, with `settings.<key>.label` and
+  `settings.<key>.hint` for each setting. A theme or plugin that overrides the old keys must move its overrides.
+- The macro `{{projects_table}}`, the partial `rubylode_projects/projects_table` and every other settings key keep their names.
+- Wording: the weekly chart is "Opened and closed per week" everywhere, the Quiet tile is "No activity in 30 days", the
+  checkbox hints say "checked" instead of "ticked", the trend hint names the summary chart and the Trend column, and the
+  macro errors end with a full stop. Spelling is en-US.
+- The description on Administration, Plugins now lists the summary, the extra columns and the projects table.
+
+### Added
+
+- Migration `001_rename_settings_keys_to_the_rubylode_standard`: moves the saved values of `welcome_projects_table`,
+  `welcome_projects_table_column` and `projects_table_limit` to `show_on_welcome_page`, `welcome_page_column` and
+  `maximum_rows`. It writes nothing when the settings were never saved. Rolling it back (`rake redmine:plugins:migrate
+  NAME=redmine_rubylode_projects VERSION=0`) moves them back.
+- Tests for the migration in both directions, for the locale layout and for the Welcome page and Column fields.
+
+### Fixed
+
+- The % done cell of a project without issues showed an en dash. It now says "No issues".
+
+### Upgrading from 1.x
+
+1. Back up the database, or at least note the three settings above.
+2. Put the new plugin folder in place and run `bundle exec rake redmine:plugins:migrate RAILS_ENV=production`.
+3. Restart Redmine, then open Administration, Plugins, Configure and check the Welcome page, Column and Maximum rows values.
+4. If you write the settings from a deployment tool, rename the three keys there. An old key left in the hash is ignored.
+5. If you override the plugin's strings or call `PluginSettings`, use the new names above.
+
 ## [1.3.1] - 2026-11-04
 
 ### Changed
@@ -52,8 +95,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [1.0.0] - 2026-11-02
 
-First stable release. A project Overview with counts, a weekly chart and what is urgent, and a summary, extra columns and a board view for the projects list.
-The name, author and version match the redmine.org listing, and the plugin shows its project address on Administration, Plugins.
+### Added
+
+- First stable release: a project Overview with counts, a weekly chart and what is urgent, and a summary, extra columns and a board view for the projects list.
+- The name, author and version match the redmine.org listing, and the plugin shows its project address on Administration, Plugins.
 
 ## [0.5.1] - 2026-11-02
 
@@ -67,25 +112,27 @@ The name, author and version match the redmine.org listing, and the plugin shows
 
 ### Added
 
-- The projects list opens in the list view by default, with a summary above it: seven tiles (Projects, Open issues, Closed this
-  week, Overdue, Due in 7 days, Unassigned, Quiet 30+ days), the Overview's opened-against-closed chart over the projects in
-  the list, and "Where the work is", open issues per top-level project. Everything counts what the viewer may see. Tiles
-  and bars link to the matching issue lists and show cards on hover and focus.
+- The projects list opens in the list view by default, with a summary above it.
+- The summary has seven tiles (Projects, Open issues, Closed this week, Overdue, Due in 7 days, Unassigned, Quiet 30+ days).
+- The summary has the Overview's opened-against-closed chart over the projects in the list, and "Where the work is", open
+  issues per top-level project.
+- Everything in the summary counts what the viewer may see. Tiles and bars link to the matching issue lists and show cards on
+  hover and focus.
 - Open issues, Overdue, Closed (last 7 days), % done and Trend columns for the project list, as ProjectQuery columns that
   work in the list options and the CSV export. The Trend sparkline shows each week's opened and closed with links.
 - Plugin settings: default projects display (list, board, leave to Redmine), the summary on or off, the columns added, and
   the weeks in the trend (4 to 26), validated on save.
 - `?summary=0` hides the summary for one request; `?display_type=board` always gives the board, and a display named in the
   address is remembered for the session.
-- Follow Redmine's own display setting when the default display is left to Redmine. Saved queries are untouched.
+- Redmine's own display setting is followed when the default display is left to Redmine. Saved queries are untouched.
 - `IssueListLink` builds overdue, due-date, unassigned and several-project links.
 - Custom properties for the summary, bars, progress bar and sparkline (listed in the README).
 - Demo data with due dates and issues closed this week.
 
 ### Changed
 
-- Load the Overview's script on the projects list too. The weekly chart partial takes an optional note, so both pages use it.
-- If a plugin with its own projects summary is installed (`redmine_projects_dashboard`), this plugin adds neither tiles nor columns.
+- The Overview's script now loads on the projects list too. The weekly chart partial takes an optional note, so both pages use it.
+- With a plugin that has its own projects summary installed (`redmine_projects_dashboard`), this plugin adds neither tiles nor columns.
 
 ## [0.4.0] - 2026-11-01
 

@@ -24,8 +24,8 @@ Redmine::Plugin.register :redmine_rubylode_projects do
   author "Rubylode"
   author_url "https://github.com/rubylode"
   url "https://github.com/rubylode/redmine-rubylode-projects"
-  description "A project Overview with counts, a weekly chart and what is urgent, and pages for the board view of the projects list"
-  version "1.3.1"
+  description "A project Overview with counts, a weekly chart and urgent issues; for the projects list, a summary, extra columns and board pages; and a projects table for the welcome page and wiki pages"
+  version "2.0.0"
   requires_redmine version_or_higher: "6.0.0"
   settings default: RubylodeProjects::Settings::DEFAULTS, partial: "settings/rubylode_projects_settings"
 end
