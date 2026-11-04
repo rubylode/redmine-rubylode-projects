@@ -3,12 +3,12 @@
 <% issues = overview.urgent_issues %>
 <div class="rubylode-overview-card rubylode-overview-urgent">
   <div class="rubylode-overview-card-header">
-    <h3><%= l(:rubylode_projects_in_progress_and_urgent) %> <span class="rubylode-overview-count"><%= number_with_delimiter(overview.urgent_issue_count) %></span></h3>
-    <%= link_to l(:rubylode_projects_all_open_by_priority), project_issues_path(project, set_filter: 1, status_id: "o", sort: "priority:desc,updated_on:desc"),
+    <h3><%= l("rubylode_projects.in_progress_and_urgent") %> <span class="rubylode-overview-count"><%= number_with_delimiter(overview.urgent_issue_count) %></span></h3>
+    <%= link_to l("rubylode_projects.all_open_by_priority"), project_issues_path(project, set_filter: 1, status_id: "o", sort: "priority:desc,updated_on:desc"),
                 class: "rubylode-overview-header-link" %>
   </div>
   <% if issues.empty? %>
-    <p class="rubylode-overview-empty"><%= l(:rubylode_projects_nothing_urgent) %></p>
+    <p class="rubylode-overview-empty"><%= l("rubylode_projects.nothing_urgent") %></p>
   <% else %>
     <ul class="rubylode-overview-issue-list">
       <% issues.each do |issue| %>

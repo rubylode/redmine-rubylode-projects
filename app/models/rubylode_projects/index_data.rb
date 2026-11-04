@@ -57,15 +57,15 @@ module RubylodeProjects
 
     def extra_strings
       %i[quiet_never quiet_since busiest_open open_issues closed_week].to_h do |key|
-        [key.to_s.gsub(/_(\w)/) { Regexp.last_match(1).upcase }, view.l(:"rubylode_projects_tip_#{key}")]
+        [key.to_s.gsub(/_(\w)/) { Regexp.last_match(1).upcase }, view.l("rubylode_projects.tips.#{key}")]
       end
     end
 
     def tiles_json
       @summary.tiles.to_h do |tile|
-        [tile.key.to_s, { count: tile.count, url: tile.url, seeAll: (view.l(:rubylode_projects_see_all, count: view.number_with_delimiter(tile.count)) if tile.url),
+        [tile.key.to_s, { count: tile.count, url: tile.url, seeAll: (view.l("rubylode_projects.see_all", count: view.number_with_delimiter(tile.count)) if tile.url),
                           issues: issues_json(tile.preview), projects: projects_json(tile.preview),
-                          empty: view.l(%i[projects quiet].include?(tile.preview) ? :rubylode_projects_tip_no_projects : :rubylode_projects_tip_no_issues) }]
+                          empty: view.l(%i[projects quiet].include?(tile.preview) ? "rubylode_projects.tips.no_projects" : "rubylode_projects.tips.no_issues") }]
       end
     end
 
@@ -82,13 +82,13 @@ module RubylodeProjects
       when :projects
         @summary.busiest_project_rows.map do |row|
           { name: row.name, url: view.project_path(row.identifier),
-            note: view.l(:rubylode_projects_tip_busiest_open, count: view.number_with_delimiter(@metrics.own_figures_of(row.id).open_count)) }
+            note: view.l("rubylode_projects.tips.busiest_open", count: view.number_with_delimiter(@metrics.own_figures_of(row.id).open_count)) }
         end
       when :quiet
         @summary.quiet_project_rows.map do |row|
           last = @metrics.last_activity_times[row.id]
           { name: row.name, url: view.project_activity_path(row.identifier),
-            note: last ? view.l(:rubylode_projects_tip_quiet_since, ago: view.time_ago_in_words(last)) : view.l(:rubylode_projects_tip_quiet_never) }
+            note: last ? view.l("rubylode_projects.tips.quiet_since", ago: view.time_ago_in_words(last)) : view.l("rubylode_projects.tips.quiet_never") }
         end
       else
         []
@@ -111,7 +111,7 @@ module RubylodeProjects
       weeks = Array.new(@metrics.week_count) do |index|
         start = first_date + (index * 7)
         last = [start + 6, @metrics.today].min
-        { start: start.iso8601, label: view.l(:rubylode_projects_week_range, first: view.format_date(start), last: view.format_date(last)),
+        { start: start.iso8601, label: view.l("rubylode_projects.week_range", first: view.format_date(start), last: view.format_date(last)),
           openedQuery: bare.opened_between(start, last), closedQuery: bare.closed_between(start, last) }
       end
       with = ->(choice) { IssueListLink.new(base_path: "", subprojects: choice).status(:all).delete_prefix(bare.status(:all)) }

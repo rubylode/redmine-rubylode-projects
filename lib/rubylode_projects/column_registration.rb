@@ -18,12 +18,13 @@ module RubylodeProjects
   # Puts the plugin's columns on ProjectQuery. Runs on every code reload (the query class is new each time in development)
   # and adds each column once.
   module ColumnRegistration
+    # The caption is a Proc: Redmine reads a plain string as the caption itself, and a Proc is called when the caption is shown.
     COLUMNS = [
-      [:rubylode_open_issues, :rubylode_projects_column_open_issues],
-      [:rubylode_overdue_issues, :rubylode_projects_column_overdue],
-      [:rubylode_closed_week, :rubylode_projects_column_closed_week],
-      [:rubylode_percent_done, :rubylode_projects_column_percent_done],
-      [:rubylode_trend, :rubylode_projects_column_trend]
+      [:rubylode_open_issues, -> { I18n.t("rubylode_projects.columns.open_issues") }],
+      [:rubylode_overdue_issues, -> { I18n.t("rubylode_projects.columns.overdue") }],
+      [:rubylode_closed_week, -> { I18n.t("rubylode_projects.columns.closed_week") }],
+      [:rubylode_percent_done, -> { I18n.t("rubylode_projects.columns.percent_done") }],
+      [:rubylode_trend, -> { I18n.t("rubylode_projects.columns.trend") }]
     ].freeze
 
     def self.register

@@ -44,7 +44,7 @@ module RubylodeProjects
 
     def self.strings(view)
       %i[open opened closed net open_total top_trackers opened_link closed_link overdue done no_issues].to_h do |key|
-        [key.to_s.gsub(/_(\w)/) { Regexp.last_match(1).upcase }, view.l(:"rubylode_projects_tip_#{key}")]
+        [key.to_s.gsub(/_(\w)/) { Regexp.last_match(1).upcase }, view.l("rubylode_projects.tips.#{key}")]
       end
     end
 
@@ -62,12 +62,12 @@ module RubylodeProjects
     def week_detail(week, open_total)
       last_day = overview.week_end_date(week)
       net = week.opened_count - week.closed_count
-      label = view.l(:rubylode_projects_week_range, first: view.format_date(week.start_date), last: view.format_date(last_day))
+      label = view.l("rubylode_projects.week_range", first: view.format_date(week.start_date), last: view.format_date(last_day))
       WeekDetail.new(
         week: week, label: label, net: net, open_total: open_total,
         top_trackers: overview.top_trackers_by_week.fetch(week.start_date, []).map { |tracker_id, count| [overview.tracker_names[tracker_id], count] },
         opened_url: link.opened_between(week.start_date, last_day), closed_url: link.closed_between(week.start_date, last_day),
-        summary: view.l(:rubylode_projects_week_summary, label: label, opened: week.opened_count, closed: week.closed_count,
+        summary: view.l("rubylode_projects.week_summary", label: label, opened: week.opened_count, closed: week.closed_count,
                                                           net: signed(net), open_total: open_total)
       )
     end
@@ -89,7 +89,7 @@ module RubylodeProjects
     end
 
     def tile_json(kind, count, url)
-      { count: count, url: url, seeAll: view.l(:rubylode_projects_see_all, count: view.number_with_delimiter(count)),
+      { count: count, url: url, seeAll: view.l("rubylode_projects.see_all", count: view.number_with_delimiter(count)),
         issues: preview_issues(kind).map { |issue| { id: issue.id, subject: issue.subject, status: issue.status.name, url: view.issue_path(issue) } } }
     end
 

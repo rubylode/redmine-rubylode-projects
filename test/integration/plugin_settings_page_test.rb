@@ -52,6 +52,16 @@ class PluginSettingsPageTest < Redmine::IntegrationTest
     assert_select "input#settings_projects_table_show_done_bar[checked]"
   end
 
+  test "the welcome page placement uses the standard heading, labels and a visible Column select" do
+    get PATH
+    assert_select "h3", text: "Show the block on"
+    assert_select "label[for=settings_show_on_welcome_page]", text: "Welcome page"
+    assert_select "label[for=settings_welcome_page_column]", text: "Column"
+    assert_select "select#settings_welcome_page_column option", 2
+    assert_select "select#settings_welcome_page_column option[value=left]", text: "Left"
+    assert_select "select#settings_welcome_page_column option[value=right]", text: "Right"
+  end
+
   test "valid settings are saved" do
     post PATH, params: { settings: valid_settings(default_display: "board", trend_weeks: "20", show_summary: "0") }
     assert_redirected_to PATH

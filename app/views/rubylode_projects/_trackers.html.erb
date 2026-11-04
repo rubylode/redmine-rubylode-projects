@@ -2,20 +2,20 @@
 <% project = overview.project %>
 <% link = overview.issue_list_link(project_issues_path(project)) %>
 <div class="rubylode-overview-card rubylode-overview-trackers">
-  <h3><%= l(:rubylode_projects_by_tracker) %></h3>
+  <h3><%= l("rubylode_projects.by_tracker") %></h3>
   <% overview.tracker_tallies.each do |tally| %>
     <div class="rubylode-overview-tracker" data-rubylode-tracker="<%= tally.tracker.id %>">
       <div class="rubylode-overview-tracker-heading">
         <%= link_to tally.tracker.name, link.tracker(tally.tracker.id), class: "rubylode-overview-tracker-name" %>
         <span class="rubylode-overview-tracker-counts">
-          <%= t(:rubylode_projects_open_and_closed_html, open: content_tag(:strong, number_with_delimiter(tally.open_count)), closed: number_with_delimiter(tally.closed_count)) %>
+          <%= t("rubylode_projects.open_and_closed_html", open: content_tag(:strong, number_with_delimiter(tally.open_count)), closed: number_with_delimiter(tally.closed_count)) %>
         </span>
       </div>
       <div class="rubylode-overview-meter" role="presentation">
         <div class="rubylode-overview-meter-fill" style="width: <%= tally.done_percentage %>%"></div>
       </div>
       <div class="rubylode-overview-tracker-note">
-        <%= l(:rubylode_projects_done_of_total, percentage: tally.done_percentage, total: number_with_delimiter(tally.total_count)) %>
+        <%= l("rubylode_projects.done_of_total", percentage: tally.done_percentage, total: number_with_delimiter(tally.total_count)) %>
       </div>
     </div>
   <% end %>

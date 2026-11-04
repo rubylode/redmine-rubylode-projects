@@ -32,9 +32,9 @@
         <tr>
           <th scope="col"><%= l(:field_name) %></th>
           <% if show_description %><th scope="col"><%= l(:field_description) %></th><% end %>
-          <th scope="col" class="rubylode-projects-table-number"><%= l(:rubylode_projects_tip_open) %></th>
-          <th scope="col" class="rubylode-projects-table-number"><%= l(:rubylode_projects_closed) %></th>
-          <% if show_done_bar %><th scope="col"><%= l(:rubylode_projects_done) %></th><% end %>
+          <th scope="col" class="rubylode-projects-table-number"><%= l("rubylode_projects.tips.open") %></th>
+          <th scope="col" class="rubylode-projects-table-number"><%= l("rubylode_projects.closed") %></th>
+          <% if show_done_bar %><th scope="col"><%= l("rubylode_projects.done") %></th><% end %>
         </tr>
       </thead>
       <tbody>
@@ -46,11 +46,11 @@
             <% if show_description %><td class="rubylode-projects-table-description" title="<%= row.description %>"><%= row.description %></td><% end %>
             <td class="rubylode-projects-table-number">
               <%= link_to number_with_delimiter(row.open_count), row.open_url, class: "rubylode-projects-table-open",
-                          "aria-label": l(:rubylode_projects_table_open_link, project: row.project.name, count: row.open_count) %>
+                          "aria-label": l("rubylode_projects.table_open_link", project: row.project.name, count: row.open_count) %>
             </td>
             <td class="rubylode-projects-table-number">
               <%= link_to number_with_delimiter(row.closed_count), row.closed_url, class: "rubylode-projects-table-closed",
-                          "aria-label": l(:rubylode_projects_table_closed_link, project: row.project.name, count: row.closed_count) %>
+                          "aria-label": l("rubylode_projects.table_closed_link", project: row.project.name, count: row.closed_count) %>
             </td>
             <% if show_done_bar %>
               <td class="rubylode-projects-table-done">

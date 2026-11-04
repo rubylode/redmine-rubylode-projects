@@ -1,8 +1,8 @@
 <%# The link between the cards and Redmine's classic Overview page, so the classic page stays one click away. %>
 <p class="rubylode-projects-view-switch-line">
   <% if to_classic %>
-    <%= link_to l(:rubylode_projects_classic_overview), project_path(project, view: "classic"), class: "rubylode-projects-view-switch" %>
+    <%= link_to l("rubylode_projects.classic_overview"), project_path(project, view: "classic"), class: "rubylode-projects-view-switch" %>
   <% else %>
-    <%= link_to l(:rubylode_projects_card_overview), project_path(project), class: "rubylode-projects-view-switch" %>
+    <%= link_to l("rubylode_projects.card_overview"), project_path(project), class: "rubylode-projects-view-switch" %>
   <% end %>
 </p>

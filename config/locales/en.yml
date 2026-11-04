@@ -1,113 +1,136 @@
-# Rubylode Projects: the English strings. Redmine's own strings are used where it has one (Members, Subprojects, Summary, Gantt).
+# Rubylode Projects: the English strings, under one root. Redmine's own strings are used where it has one (Members, Subprojects, Summary, Gantt).
 en:
-  rubylode_projects_open_issues: "Open issues"
-  rubylode_projects_closed_issues: "Closed"
-  rubylode_projects_all_issues: "All issues"
-  rubylode_projects_done: "Done"
-  rubylode_projects_closed_share: "%{percentage}% of all issues"
-  rubylode_projects_this_project_only: "In this project only"
-  rubylode_projects_across_subprojects:
-    one: "Across 1 subproject"
-    other: "Across %{count} subprojects"
-  rubylode_projects_closed_of_total: "%{closed} of %{total} closed"
-  rubylode_projects_weekly_chart_title: "Opened vs closed per week"
-  rubylode_projects_weekly_chart_description: "Bar chart of the issues opened and closed in each of the last %{count} weeks"
-  rubylode_projects_weekly_chart_note_with_subprojects: "This project's issues, subprojects included, by the week they were opened or closed."
-  rubylode_projects_weekly_chart_note_project_only: "This project's issues, by the week they were opened or closed."
-  rubylode_projects_opened: "Opened"
-  rubylode_projects_closed: "Closed"
-  rubylode_projects_week: "Week"
-  rubylode_projects_week_of: "Week of %{date}"
-  rubylode_projects_bar_title_opened: "Week of %{date}: %{count} opened"
-  rubylode_projects_bar_title_closed: "Week of %{date}: %{count} closed"
-  rubylode_projects_by_tracker: "By tracker"
-  rubylode_projects_open_and_closed_html: "%{open} open · %{closed} closed"
-  rubylode_projects_done_of_total: "%{percentage}% done of %{total}"
-  rubylode_projects_in_progress_and_urgent: "In progress and urgent"
-  rubylode_projects_all_open_by_priority: "All open issues →"
-  rubylode_projects_nothing_urgent: "Nothing is in progress or urgent."
-  rubylode_projects_classic_overview: "Classic overview"
-  rubylode_projects_card_overview: "Back to the new overview"
-  rubylode_projects_week_range: "%{first} to %{last}"
-  rubylode_projects_week_summary: "%{label}: %{opened} opened, %{closed} closed, net %{net}, %{open_total} open at the end"
-  rubylode_projects_see_all: "See all %{count}"
-  rubylode_projects_tip_open: "Open"
-  rubylode_projects_tip_opened: "Opened"
-  rubylode_projects_tip_closed: "Closed"
-  rubylode_projects_tip_net: "Net change"
-  rubylode_projects_tip_open_total: "Open at the end of the week"
-  rubylode_projects_tip_top_trackers: "Most opened"
-  rubylode_projects_tip_opened_link: "Issues opened this week"
-  rubylode_projects_tip_closed_link: "Issues closed this week"
-  rubylode_projects_tip_overdue: "Overdue"
-  rubylode_projects_tip_done: "Done"
-  rubylode_projects_tip_no_issues: "No issues"
-  rubylode_projects_series_toggle: "Show or hide %{series}"
-  rubylode_projects_net_change: "Net change"
-  rubylode_projects_open_at_end: "Open at the end"
-  rubylode_projects_week_issue_lists: "Issue lists"
-  rubylode_projects_setting_default_display: "Default projects display"
-  rubylode_projects_setting_default_display_help: "What /projects shows when the address names no display and no saved query. ?display_type=board always shows the board."
-  rubylode_projects_display_list: "List"
-  rubylode_projects_display_board: "Board"
-  rubylode_projects_display_redmine: "Leave to Redmine"
-  rubylode_projects_setting_show_summary: "Show the summary and charts above the list"
-  rubylode_projects_setting_added_columns: "Columns added to the project list"
-  rubylode_projects_setting_add_columns_to_saved_queries: "Also add them to saved queries"
-  rubylode_projects_setting_add_columns_to_saved_queries_help: "Shows the ticked columns on a saved project query that holds none of this plugin's columns. The query itself is not changed, so turning this off brings back what was saved."
-  rubylode_projects_setting_added_columns_help: "Added to Redmine's default columns when the list names none of its own. Every column can also be picked in the list options."
-  rubylode_projects_setting_trend_weeks: "Weeks in the trend"
-  rubylode_projects_setting_trend_weeks_help: "From %{first} to %{last}. The portfolio chart and the sparklines cover this many weeks."
-  rubylode_projects_error_default_display: "Default projects display must be List, Board or Leave to Redmine."
-  rubylode_projects_error_trend_weeks: "Weeks in the trend must be a whole number from %{first} to %{last}."
-  rubylode_projects_error_columns: "Unknown columns: %{names}."
-  rubylode_projects_column_open_issues: "Open issues"
-  rubylode_projects_column_overdue: "Overdue"
-  rubylode_projects_column_closed_week: "Closed (last 7 days)"
-  rubylode_projects_column_percent_done: "% done"
-  rubylode_projects_column_trend: "Trend"
-  rubylode_projects_column_last_activity: "Last activity"
-  rubylode_projects_trend_label: "Closed per week over the last %{count} weeks, oldest first: %{values}"
-  rubylode_projects_summary_label: "Summary of the projects in this list"
-  rubylode_projects_tile_projects: "Projects"
-  rubylode_projects_tile_open: "Open issues"
-  rubylode_projects_tile_closed_week: "Closed this week"
-  rubylode_projects_tile_overdue: "Overdue"
-  rubylode_projects_tile_due_soon: "Due in 7 days"
-  rubylode_projects_tile_unassigned: "Unassigned"
-  rubylode_projects_tile_quiet: "Quiet 30+ days"
-  rubylode_projects_tile_note_projects: "in this list"
-  rubylode_projects_tile_note_open: "of %{total} issues"
-  rubylode_projects_tile_note_closed_week: "since Monday"
-  rubylode_projects_tile_note_overdue: "past their due date"
-  rubylode_projects_tile_note_due_soon: "open, due today or within 7 days"
-  rubylode_projects_tile_note_unassigned: "open, with no assignee"
-  rubylode_projects_tile_note_quiet: "projects with no activity"
-  rubylode_projects_portfolio_chart_note: "The issues of the projects in this list, by the week they were opened or closed."
-  rubylode_projects_link_not_limited_note: "The list has more than %{count} projects, so the links list the issues of every project you can see, not only these."
-  rubylode_projects_where_the_work_is: "Where the work is"
-  rubylode_projects_where_the_work_is_note: "Open issues per top-level project, subprojects included. The %{count} busiest."
-  rubylode_projects_no_open_issues: "No open issues."
-  rubylode_projects_trend_table_caption: "Issues closed and opened per week, for each project in the list"
-  rubylode_projects_trend_cell: "%{closed} closed, %{opened} opened"
-  rubylode_projects_tip_busiest_open: "%{count} open"
-  rubylode_projects_tip_quiet_since: "Last activity %{ago} ago"
-  rubylode_projects_tip_quiet_never: "No activity yet"
-  rubylode_projects_tip_open_issues: "Open issues"
-  rubylode_projects_tip_closed_week: "Closed in the last 7 days"
-  rubylode_projects_tip_no_projects: "No projects"
-  rubylode_projects_table_open_link: "%{project}: %{count} open issues"
-  rubylode_projects_table_closed_link: "%{project}: %{count} closed issues"
-  rubylode_projects_macro_unknown_argument: "projects_table takes title, limit and subprojects, not \"%{name}\""
-  rubylode_projects_macro_bad_limit: "limit must be a whole number from %{first} to %{last}"
-  rubylode_projects_macro_bad_subprojects: "subprojects must be true or false"
-  rubylode_projects_setting_welcome_table: "Show the projects table on the welcome page"
-  rubylode_projects_setting_welcome_table_column: "Column of the welcome page"
-  rubylode_projects_welcome_column_left: "Left"
-  rubylode_projects_welcome_column_right: "Right"
-  rubylode_projects_setting_table_limit: "Rows in the projects table"
-  rubylode_projects_setting_table_limit_help: "From %{first} to %{last}. Applies to the welcome page and to the macro and partial when they name no limit."
-  rubylode_projects_setting_table_show_description: "Show the description in the projects table"
-  rubylode_projects_setting_table_show_done_bar: "Show the done bar in the projects table"
-  rubylode_projects_error_welcome_column: "Column of the welcome page must be Left or Right."
-  rubylode_projects_error_table_limit: "Rows in the projects table must be a whole number from %{first} to %{last}."
+  rubylode_projects:
+    open_issues: Open issues
+    closed_issues: Closed
+    all_issues: All issues
+    done: Done
+    closed_share: "%{percentage}% of all issues"
+    this_project_only: In this project only
+    across_subprojects:
+      one: Across 1 subproject
+      other: Across %{count} subprojects
+    closed_of_total: "%{closed} of %{total} closed"
+    weekly_chart_title: Opened vs closed per week
+    weekly_chart_description: Bar chart of the issues opened and closed in each of the last %{count} weeks
+    weekly_chart_note_with_subprojects: This project's issues, subprojects included, by the week they were opened or closed.
+    weekly_chart_note_project_only: This project's issues, by the week they were opened or closed.
+    opened: Opened
+    closed: Closed
+    week: Week
+    week_of: Week of %{date}
+    bar_title_opened: 'Week of %{date}: %{count} opened'
+    bar_title_closed: 'Week of %{date}: %{count} closed'
+    by_tracker: By tracker
+    open_and_closed_html: "%{open} open · %{closed} closed"
+    done_of_total: "%{percentage}% done of %{total}"
+    in_progress_and_urgent: In progress and urgent
+    all_open_by_priority: All open issues →
+    nothing_urgent: Nothing is in progress or urgent.
+    classic_overview: Classic overview
+    card_overview: Back to the new overview
+    week_range: "%{first} to %{last}"
+    week_summary: "%{label}: %{opened} opened, %{closed} closed, net %{net}, %{open_total} open at the end"
+    see_all: See all %{count}
+    tips:
+      open: Open
+      opened: Opened
+      closed: Closed
+      net: Net change
+      open_total: Open at the end of the week
+      top_trackers: Most opened
+      opened_link: Issues opened this week
+      closed_link: Issues closed this week
+      overdue: Overdue
+      done: Done
+      no_issues: No issues
+      busiest_open: "%{count} open"
+      quiet_since: Last activity %{ago} ago
+      quiet_never: No activity yet
+      open_issues: Open issues
+      closed_week: Closed in the last 7 days
+      no_projects: No projects
+    series_toggle: Show or hide %{series}
+    net_change: Net change
+    open_at_end: Open at the end
+    week_issue_lists: Issue lists
+    settings:
+      show_on_heading: Show the block on
+      default_display:
+        label: Default projects display
+        hint: What /projects shows when the address names no display and no saved query. ?display_type=board always shows the board.
+        choices:
+          list: List
+          board: Board
+          redmine: Leave to Redmine
+      show_summary:
+        label: Show the summary and charts above the list
+      added_columns:
+        label: Columns added to the project list
+        hint: Added to Redmine's default columns when the list names none of its own. Every column can also be picked in the list options.
+      add_columns_to_saved_queries:
+        label: Also add them to saved queries
+        hint: Shows the ticked columns on a saved project query that holds none of this plugin's columns. The query itself is not changed, so turning this off brings back what was saved.
+      trend_weeks:
+        label: Weeks in the trend
+        hint: From %{first} to %{last}. The portfolio chart and the sparklines cover this many weeks.
+      show_on_welcome_page:
+        label: Welcome page
+        hint: Adds the projects table to Redmine's home page, after the welcome text or the news.
+      welcome_page_column:
+        label: Column
+        hint: Left or right.
+        choices:
+          left: Left
+          right: Right
+      maximum_rows:
+        label: Maximum rows
+        hint: At most this many rows are listed in the projects table, from %{first} to %{last}. The macro and the partial use it when they name no limit.
+      projects_table_show_description:
+        label: Show the description in the projects table
+      projects_table_show_done_bar:
+        label: Show the done bar in the projects table
+    errors:
+      default_display: Default projects display must be List, Board or Leave to Redmine.
+      trend_weeks: Weeks in the trend must be a whole number from %{first} to %{last}.
+      columns: 'Unknown columns: %{names}.'
+      welcome_page_column: Welcome page column must be Left or Right.
+      maximum_rows: Maximum rows must be a whole number from %{first} to %{last}.
+    columns:
+      open_issues: Open issues
+      overdue: Overdue
+      closed_week: Closed (last 7 days)
+      percent_done: "% done"
+      trend: Trend
+      last_activity: Last activity
+    trend_label: 'Closed per week over the last %{count} weeks, oldest first: %{values}'
+    summary_label: Summary of the projects in this list
+    tiles:
+      projects: Projects
+      open: Open issues
+      closed_week: Closed this week
+      overdue: Overdue
+      due_soon: Due in 7 days
+      unassigned: Unassigned
+      quiet: Quiet 30+ days
+    tile_notes:
+      projects: in this list
+      open: of %{total} issues
+      closed_week: since Monday
+      overdue: past their due date
+      due_soon: open, due today or within 7 days
+      unassigned: open, with no assignee
+      quiet: projects with no activity
+    portfolio_chart_note: The issues of the projects in this list, by the week they were opened or closed.
+    link_not_limited_note: The list has more than %{count} projects, so the links list the issues of every project you can see, not only these.
+    where_the_work_is: Where the work is
+    where_the_work_is_note: Open issues per top-level project, subprojects included. The %{count} busiest.
+    no_open_issues: No open issues.
+    trend_table_caption: Issues closed and opened per week, for each project in the list
+    trend_cell: "%{closed} closed, %{opened} opened"
+    table_open_link: "%{project}: %{count} open issues"
+    table_closed_link: "%{project}: %{count} closed issues"
+    macro_errors:
+      unknown_argument: projects_table takes title, limit and subprojects, not "%{name}"
+      bad_limit: limit must be a whole number from %{first} to %{last}
+      bad_subprojects: subprojects must be true or false

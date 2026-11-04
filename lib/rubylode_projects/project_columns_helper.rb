@@ -81,7 +81,7 @@ module RubylodeProjects
 
       percentage = figures.done_percentage
       link_to(rubylode_project_link(project).status(:closed), class: "rubylode-projects-progress",
-                                                               title: l(:rubylode_projects_closed_of_total, closed: number_with_delimiter(figures.closed_count), total: number_with_delimiter(figures.total_count))) do
+                                                               title: l("rubylode_projects.closed_of_total", closed: number_with_delimiter(figures.closed_count), total: number_with_delimiter(figures.total_count))) do
         content_tag(:span, content_tag(:span, "", class: "rubylode-projects-progress-fill", style: "width: #{percentage}%"),
                     class: "rubylode-projects-progress-track", role: "presentation") +
           content_tag(:span, "#{percentage}%", class: "rubylode-projects-progress-label")
@@ -95,7 +95,7 @@ module RubylodeProjects
       subprojects = project.leaf? ? "" : (Setting.display_subprojects_issues? ? "include" : "exclude")
       (@rubylode_spark_data ||= {})[project.id] = { name: project.name, closed: figures.closed_by_week, opened: figures.opened_by_week,
                                                     base: project_issues_path(project), subprojects: subprojects }
-      label = l(:rubylode_projects_trend_label, count: layout.values.size, values: layout.values.join(", "))
+      label = l("rubylode_projects.trend_label", count: layout.values.size, values: layout.values.join(", "))
       content_tag(:span, class: "rubylode-spark-host") do
         content_tag(:span, tabindex: 0, role: "img", class: "rubylode-spark", "aria-label": label, data: { rubylode_spark: project.id }) do
           tag.svg(viewBox: "0 0 #{layout.width} #{layout.height}", class: "rubylode-spark-graphic", focusable: "false", "aria-hidden": "true") do

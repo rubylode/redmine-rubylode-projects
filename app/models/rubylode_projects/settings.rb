@@ -52,19 +52,19 @@ module RubylodeProjects
     def errors
       messages = []
       unless DISPLAY_CHOICES.include?(@values.fetch("default_display", DEFAULTS["default_display"]))
-        messages << I18n.t(:rubylode_projects_error_default_display)
+        messages << I18n.t("rubylode_projects.errors.default_display")
       end
       unless valid_trend_weeks?(@values.fetch("trend_weeks", DEFAULTS["trend_weeks"]))
-        messages << I18n.t(:rubylode_projects_error_trend_weeks, first: TREND_WEEKS_RANGE.first, last: TREND_WEEKS_RANGE.last)
+        messages << I18n.t("rubylode_projects.errors.trend_weeks", first: TREND_WEEKS_RANGE.first, last: TREND_WEEKS_RANGE.last)
       end
       unless WELCOME_PAGE_COLUMN_CHOICES.include?(@values.fetch("welcome_page_column", DEFAULTS["welcome_page_column"]))
-        messages << I18n.t(:rubylode_projects_error_welcome_column)
+        messages << I18n.t("rubylode_projects.errors.welcome_page_column")
       end
       unless valid_maximum_rows?(@values.fetch("maximum_rows", DEFAULTS["maximum_rows"]))
-        messages << I18n.t(:rubylode_projects_error_table_limit, first: MAXIMUM_ROWS_RANGE.first, last: MAXIMUM_ROWS_RANGE.last)
+        messages << I18n.t("rubylode_projects.errors.maximum_rows", first: MAXIMUM_ROWS_RANGE.first, last: MAXIMUM_ROWS_RANGE.last)
       end
       unknown = submitted_columns - COLUMN_CHOICES
-      messages << I18n.t(:rubylode_projects_error_columns, names: unknown.join(", ")) if unknown.any?
+      messages << I18n.t("rubylode_projects.errors.columns", names: unknown.join(", ")) if unknown.any?
       messages
     end
 

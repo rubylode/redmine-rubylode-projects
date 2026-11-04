@@ -1,11 +1,11 @@
 <%# The sparklines' figures as a table for screen readers: one row per project, one cell per week. %>
 <table class="rubylode-overview-visually-hidden" data-rubylode-trend-table>
-  <caption><%= l(:rubylode_projects_trend_table_caption) %></caption>
+  <caption><%= l("rubylode_projects.trend_table_caption") %></caption>
   <thead>
     <tr>
       <th><%= l(:field_name) %></th>
       <% metrics.buckets.first_date.step(metrics.buckets.first_date + ((metrics.week_count - 1) * 7), 7) do |week_start| %>
-        <th><%= l(:rubylode_projects_week_of, date: format_date(week_start)) %></th>
+        <th><%= l("rubylode_projects.week_of", date: format_date(week_start)) %></th>
       <% end %>
     </tr>
   </thead>
@@ -14,7 +14,7 @@
       <tr data-project-id="<%= project_id %>">
         <th><%= spark[:name] %></th>
         <% spark[:closed].each_with_index do |closed, index| %>
-          <td><%= l(:rubylode_projects_trend_cell, closed: closed, opened: spark[:opened][index]) %></td>
+          <td><%= l("rubylode_projects.trend_cell", closed: closed, opened: spark[:opened][index]) %></td>
         <% end %>
       </tr>
     <% end %>

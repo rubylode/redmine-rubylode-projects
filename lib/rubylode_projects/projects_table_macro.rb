@@ -32,7 +32,7 @@ module RubylodeProjects
       pairs = arguments.map { |argument| argument.to_s.split("=", 2).map(&:strip) }
       locals = {}
       pairs.each do |name, value|
-        raise ArgumentError, I18n.t(:rubylode_projects_macro_unknown_argument, name: name) unless KNOWN_ARGUMENTS.include?(name) && !value.nil?
+        raise ArgumentError, I18n.t("rubylode_projects.macro_errors.unknown_argument", name: name) unless KNOWN_ARGUMENTS.include?(name) && !value.nil?
 
         locals[name.to_sym] = send(:"read_#{name}", value.delete_prefix('"').delete_suffix('"'))
       end
@@ -47,7 +47,7 @@ module RubylodeProjects
 
       number
     rescue ArgumentError, TypeError
-      raise ArgumentError, I18n.t(:rubylode_projects_macro_bad_limit, first: ProjectsTable::LIMIT_RANGE.first, last: ProjectsTable::LIMIT_RANGE.last)
+      raise ArgumentError, I18n.t("rubylode_projects.macro_errors.bad_limit", first: ProjectsTable::LIMIT_RANGE.first, last: ProjectsTable::LIMIT_RANGE.last)
     end
 
     def self.read_subprojects(value)
@@ -55,7 +55,7 @@ module RubylodeProjects
       return true if TRUE_WORDS.include?(word)
       return false if FALSE_WORDS.include?(word)
 
-      raise ArgumentError, I18n.t(:rubylode_projects_macro_bad_subprojects)
+      raise ArgumentError, I18n.t("rubylode_projects.macro_errors.bad_subprojects")
     end
 
     Redmine::WikiFormatting::Macros.register do

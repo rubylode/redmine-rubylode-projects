@@ -4,26 +4,26 @@
 <% link = overview.issue_list_link(project_issues_path(project)) %>
 <div class="rubylode-overview-tiles">
   <div class="rubylode-overview-card rubylode-overview-tile" data-rubylode-tile="open">
-    <div class="rubylode-overview-tile-label"><%= l(:rubylode_projects_open_issues) %></div>
+    <div class="rubylode-overview-tile-label"><%= l("rubylode_projects.open_issues") %></div>
     <div class="rubylode-overview-tile-value"><%= link_to number_with_delimiter(totals.open_count), link.status(:open) %></div>
     <div class="rubylode-overview-tile-note">
       <%= safe_join(totals.open_by_tracker.map { |tally| "#{tally.tracker.name} #{number_with_delimiter(tally.open_count)}" }, " · ") %>
     </div>
   </div>
   <div class="rubylode-overview-card rubylode-overview-tile" data-rubylode-tile="closed">
-    <div class="rubylode-overview-tile-label"><%= l(:rubylode_projects_closed_issues) %></div>
+    <div class="rubylode-overview-tile-label"><%= l("rubylode_projects.closed_issues") %></div>
     <div class="rubylode-overview-tile-value"><%= link_to number_with_delimiter(totals.closed_count), link.status(:closed) %></div>
-    <div class="rubylode-overview-tile-note"><%= l(:rubylode_projects_closed_share, percentage: totals.done_percentage) %></div>
+    <div class="rubylode-overview-tile-note"><%= l("rubylode_projects.closed_share", percentage: totals.done_percentage) %></div>
   </div>
   <div class="rubylode-overview-card rubylode-overview-tile" data-rubylode-tile="all">
-    <div class="rubylode-overview-tile-label"><%= l(:rubylode_projects_all_issues) %></div>
+    <div class="rubylode-overview-tile-label"><%= l("rubylode_projects.all_issues") %></div>
     <div class="rubylode-overview-tile-value"><%= link_to number_with_delimiter(totals.total_count), link.status(:all) %></div>
     <div class="rubylode-overview-tile-note">
-      <%= overview.subproject_count.zero? ? l(:rubylode_projects_this_project_only) : l(:rubylode_projects_across_subprojects, count: overview.subproject_count) %>
+      <%= overview.subproject_count.zero? ? l("rubylode_projects.this_project_only") : l("rubylode_projects.across_subprojects", count: overview.subproject_count) %>
     </div>
   </div>
   <div class="rubylode-overview-card rubylode-overview-tile" data-rubylode-tile="done">
-    <div class="rubylode-overview-tile-label"><%= l(:rubylode_projects_done) %></div>
+    <div class="rubylode-overview-tile-label"><%= l("rubylode_projects.done") %></div>
     <div class="rubylode-overview-tile-body">
       <div class="rubylode-overview-tile-value"><%= link_to "#{totals.done_percentage}%", link.status(:closed) %></div>
       <div class="rubylode-overview-meter rubylode-overview-meter-done" role="presentation">
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="rubylode-overview-tile-note">
-      <%= l(:rubylode_projects_closed_of_total, closed: number_with_delimiter(totals.closed_count), total: number_with_delimiter(totals.total_count)) %>
+      <%= l("rubylode_projects.closed_of_total", closed: number_with_delimiter(totals.closed_count), total: number_with_delimiter(totals.total_count)) %>
     </div>
   </div>
 </div>
