@@ -5,7 +5,7 @@
 TL;DR: a project Overview page with counts, a weekly chart and a list of urgent issues, plus a summary, extra columns and
 paging for the projects list in [Redmine](https://www.redmine.org).
 
-Status: version 1.3.0, needs Redmine 6.0 or newer. `docs/roadmap/ROADMAP.md` lists what is decided and what is open.
+Status: version 1.3.1, needs Redmine 6.0 or newer. `docs/roadmap/ROADMAP.md` lists what is decided and what is open.
 
 Contents:
 

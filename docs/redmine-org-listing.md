@@ -13,15 +13,15 @@ The text to paste at www.redmine.org, Plugins, New plugin. Redmine's "Check for 
 
 ## Notes for the first version
 
-Version 1.3.0. A project Overview with counts, a weekly chart and what is urgent, and pages for the board view of the projects list. Needs Redmine 6.0 or newer. Install and settings are described in the README at https://github.com/rubylode/redmine-rubylode-projects.
+Version 1.3.1. A project Overview with counts, a weekly chart and what is urgent, and pages for the board view of the projects list. Needs Redmine 6.0 or newer. Install and settings are described in the README at https://github.com/rubylode/redmine-rubylode-projects.
 
 ## File to upload
 
-`redmine_rubylode_projects-1.3.0.zip`, the file the GitHub release workflow publishes when a `v1.3.0` tag is pushed. Upload the same file that is attached to the GitHub release.
+`redmine_rubylode_projects-1.3.1.zip`, the file the GitHub release workflow publishes when a `v1.3.1` tag is pushed. Upload the same file that is attached to the GitHub release.
 
 ## Checking the result
 
-The name, author and version in the listing must match what the plugin registers (`Rubylode Projects`, `Rubylode`, `1.3.0`). When they do, Administration, Plugins, Check for updates shows:
+The name, author and version in the listing must match what the plugin registers (`Rubylode Projects`, `Rubylode`, `1.3.1`). When they do, Administration, Plugins, Check for updates shows:
 
 - a green tick: the installed version is the latest one listed on redmine.org;
 - an amber warning: redmine.org lists a newer version than the installed one;

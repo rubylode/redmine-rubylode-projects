@@ -2,6 +2,12 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.3.1] - 2026-11-04
+
+### Changed
+
+- A test expected the previous version number and failed in CI. No change for users.
+
 ## [1.3.0] - 2026-11-04
 
 ### Changed
