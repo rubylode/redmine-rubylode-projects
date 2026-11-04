@@ -5,7 +5,7 @@
 TL;DR: a project Overview page with counts, a weekly chart and a list of urgent issues, plus a summary, extra columns and
 paging for the projects list in [Redmine](https://www.redmine.org).
 
-Status: version 1.1.0, Redmine 7 only. `docs/roadmap/ROADMAP.md` lists what is decided and what is open.
+Status: version 1.3.0, needs Redmine 6.0 or newer. `docs/roadmap/ROADMAP.md` lists what is decided and what is open.
 
 Contents:
 
@@ -263,11 +263,11 @@ display earlier in the session.
 
 ## Compatibility
 
-Redmine 7.x (7.0.0 or newer). I run it on Redmine 7.0.2. The workflow in `.github/workflows/tests.yml` tests 7.0.2 and the 7.0-stable branch on Ruby 3.4 and 4.0. Redmine 6 and older are not supported. The plugin adds no table and no migration.
+Redmine 6.0 or newer. The workflow in `.github/workflows/tests.yml` runs the plugin's own tests on Redmine 7.0, 6.1 and 6.0. Redmine 5 and older are not supported. The plugin adds no table and no migration.
 
 ## Installation
 
-Redmine 7.0 or newer. The folder must be named `redmine_rubylode_projects`, the same as the plugin id.
+Redmine 6.0 or newer. The folder must be named `redmine_rubylode_projects`, the same as the plugin id.
 
 1. Put the plugin in your Redmine's `plugins` folder:
 
@@ -409,7 +409,7 @@ A block to paste into a theme and adjust (soft grey page, white cards, a blue ra
 
 ## Known limits
 
-- Redmine 7 only; older versions are not supported.
+- Redmine 6.0 or newer; older versions are not supported.
 - The cards replace Redmine's overview blocks by hiding them with CSS. A theme or plugin that restyles those blocks'
   classes may show or hide them differently; `?view=classic` always shows Redmine's own page.
 - The Overview's weekly chart covers 12 weeks and its in-progress list at most eight issues; the projects list's trend weeks are a setting.

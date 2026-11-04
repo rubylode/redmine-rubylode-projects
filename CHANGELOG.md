@@ -2,6 +2,12 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.3.0] - 2026-11-04
+
+### Changed
+
+- Runs on Redmine 6.0 and newer. The plugin's own tests pass unchanged on those versions; no code changed.
+
 ## [1.2.1] - 2026-11-03
 
 ### Added
