@@ -2,6 +2,15 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.1.0] - 2026-11-05
+
+No change to what the plugin does. This release carries the documentation and the build.
+
+### Changed
+
+- The workflows use the current versions of the GitHub actions, and Dependabot sends one grouped update a month instead of one pull request per action.
+- The version number is no longer asserted exactly by the tests, so a release does not need a test edit.
+
 ## [2.0.0] - 2026-11-04
 
 The plugin follows the Rubylode plugin standard: one settings class, one locale root and the standard names for the welcome

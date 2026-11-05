@@ -36,7 +36,7 @@ class ProjectsPageTest < Redmine::IntegrationTest
   test "the plugin is registered with its name and version" do
     plugin = Redmine::Plugin.find(:redmine_rubylode_projects)
     assert_equal "Rubylode Projects", plugin.name
-    assert_equal "2.0.0", plugin.version
+    assert_match(/\A\d+\.\d+\.\d+\z/, plugin.version)
   end
 
   test "the board view shows a page of whole trees and Redmine's page links" do

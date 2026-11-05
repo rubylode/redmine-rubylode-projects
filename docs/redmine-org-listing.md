@@ -13,11 +13,11 @@ The text to paste at www.redmine.org, Plugins, New plugin. Redmine's "Check for 
 
 ## Notes for this version
 
-Version 2.0.0. A project Overview with counts, a weekly chart and urgent issues; for the projects list, a summary, extra columns and board pages; and a projects table for the welcome page and wiki pages. Needs Redmine 6.0 or newer. Install and settings are described in the README at https://github.com/rubylode/redmine-rubylode-projects.
+Version 2.1.0. A project Overview with counts, a weekly chart and urgent issues; for the projects list, a summary, extra columns and board pages; and a projects table for the welcome page and wiki pages. Needs Redmine 6.0 or newer. Install and settings are described in the README at https://github.com/rubylode/redmine-rubylode-projects.
 
 ## File to upload
 
-`redmine_rubylode_projects-2.0.0.zip`, the file the GitHub release workflow publishes when a `v2.0.0` tag is pushed. Upload the same file that is attached to the GitHub release.
+`redmine_rubylode_projects-2.1.0.zip`, the file the GitHub release workflow publishes when a `v2.0.0` tag is pushed. Upload the same file that is attached to the GitHub release.
 
 ## Checking the result
 
