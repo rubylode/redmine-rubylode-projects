@@ -2,7 +2,7 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [2.0.0] - Unreleased
+## [2.0.0] - 2026-11-04
 
 The plugin follows the Rubylode plugin standard: one settings class, one locale root and the standard names for the welcome
 page settings. Three saved settings keys change names; a migration moves their values.
